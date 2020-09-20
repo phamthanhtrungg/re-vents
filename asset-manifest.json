@@ -1,23 +1,26 @@
 {
   "files": {
-    "main.css": "/hangout-club/static/css/main.ab7136cd.chunk.css",
-    "main.js": "/hangout-club/static/js/main.6f296806.chunk.js",
-    "main.js.map": "/hangout-club/static/js/main.6f296806.chunk.js.map",
-    "runtime-main.js": "/hangout-club/static/js/runtime-main.23c3b12d.js",
-    "runtime-main.js.map": "/hangout-club/static/js/runtime-main.23c3b12d.js.map",
-    "static/js/2.25592402.chunk.js": "/hangout-club/static/js/2.25592402.chunk.js",
-    "static/js/2.25592402.chunk.js.map": "/hangout-club/static/js/2.25592402.chunk.js.map",
-    "static/js/3.08433852.chunk.js": "/hangout-club/static/js/3.08433852.chunk.js",
-    "static/js/3.08433852.chunk.js.map": "/hangout-club/static/js/3.08433852.chunk.js.map",
+    "main.css": "/hangout-club/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/hangout-club/static/js/main.53092997.chunk.js",
+    "main.js.map": "/hangout-club/static/js/main.53092997.chunk.js.map",
+    "runtime-main.js": "/hangout-club/static/js/runtime-main.6e63e71f.js",
+    "runtime-main.js.map": "/hangout-club/static/js/runtime-main.6e63e71f.js.map",
+    "static/css/2.798ab1d6.chunk.css": "/hangout-club/static/css/2.798ab1d6.chunk.css",
+    "static/js/2.f7bb5240.chunk.js": "/hangout-club/static/js/2.f7bb5240.chunk.js",
+    "static/js/2.f7bb5240.chunk.js.map": "/hangout-club/static/js/2.f7bb5240.chunk.js.map",
+    "static/js/3.0b19d9bc.chunk.js": "/hangout-club/static/js/3.0b19d9bc.chunk.js",
+    "static/js/3.0b19d9bc.chunk.js.map": "/hangout-club/static/js/3.0b19d9bc.chunk.js.map",
     "index.html": "/hangout-club/index.html",
-    "static/css/main.ab7136cd.chunk.css.map": "/hangout-club/static/css/main.ab7136cd.chunk.css.map",
-    "static/js/2.25592402.chunk.js.LICENSE.txt": "/hangout-club/static/js/2.25592402.chunk.js.LICENSE.txt",
-    "static/media/logo.103b5fa1.svg": "/hangout-club/static/media/logo.103b5fa1.svg"
+    "static/css/2.798ab1d6.chunk.css.map": "/hangout-club/static/css/2.798ab1d6.chunk.css.map",
+    "static/css/main.6dea0f05.chunk.css.map": "/hangout-club/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.f7bb5240.chunk.js.LICENSE.txt": "/hangout-club/static/js/2.f7bb5240.chunk.js.LICENSE.txt",
+    "static/media/semantic.min.css": "/hangout-club/static/media/outline-icons.ddae9b1b.woff"
   },
   "entrypoints": [
-    "static/js/runtime-main.23c3b12d.js",
-    "static/js/2.25592402.chunk.js",
-    "static/css/main.ab7136cd.chunk.css",
-    "static/js/main.6f296806.chunk.js"
+    "static/js/runtime-main.6e63e71f.js",
+    "static/css/2.798ab1d6.chunk.css",
+    "static/js/2.f7bb5240.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.53092997.chunk.js"
   ]
 }
