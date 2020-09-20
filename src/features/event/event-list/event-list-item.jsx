@@ -16,7 +16,7 @@ function EventListItem() {
             <Item.Content>
               <Item.Header as="a">Event Title</Item.Header>
               <Item.Description>
-                Hosted by <a>hosted by</a>
+                Hosted by <a href="/">hosted by</a>
               </Item.Description>
             </Item.Content>
           </Item>
@@ -37,7 +37,7 @@ function EventListItem() {
       </Segment>
       <Segment clearing>
         <span>Description will go here</span>
-        <Button as="a" color="teal" floated="right">
+        <Button as="a" href="#" color="teal" floated="right">
           View
         </Button>
       </Segment>
