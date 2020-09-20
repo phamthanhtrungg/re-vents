@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Grid } from "semantic-ui-react";
 import EventForm from "../event-form";
 import EventList from "../event-list/event-list";
@@ -55,14 +55,29 @@ const events = [
 ];
 
 function EventDashboard() {
+  const [localEvents, setLocalEvents] = useState(events);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <Grid>
       <Grid.Column width={10}>
-        <EventList events={events} />
+        <EventList events={localEvents} />
       </Grid.Column>
       <Grid.Column width={6}>
-        <Button positive>Create Event</Button>
-        <EventForm />
+        <Button
+          positive
+          onClick={() => {
+            setIsOpen(true);
+          }}
+        >
+          Create Event
+        </Button>
+        {isOpen && (
+          <EventForm
+            handleCancel={() => {
+              setIsOpen(false);
+            }}
+          />
+        )}
       </Grid.Column>
     </Grid>
   );

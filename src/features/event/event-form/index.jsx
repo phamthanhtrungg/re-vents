@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
 
-function EventForm() {
+function EventForm({ handleCancel }) {
   return (
     <Segment>
       <Form>
@@ -31,7 +31,9 @@ function EventForm() {
         <Button positive type="submit">
           Submit
         </Button>
-        <Button style={{ marginLeft: "1rem" }}>Cancel</Button>
+        <Button style={{ marginLeft: "1rem" }} onClick={handleCancel}>
+          Cancel
+        </Button>
       </Form>
     </Segment>
   );
