@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/hangout-club/static/css/main.ab7136cd.chunk.css",
+    "main.js": "/hangout-club/static/js/main.6f296806.chunk.js",
+    "main.js.map": "/hangout-club/static/js/main.6f296806.chunk.js.map",
+    "runtime-main.js": "/hangout-club/static/js/runtime-main.23c3b12d.js",
+    "runtime-main.js.map": "/hangout-club/static/js/runtime-main.23c3b12d.js.map",
+    "static/js/2.25592402.chunk.js": "/hangout-club/static/js/2.25592402.chunk.js",
+    "static/js/2.25592402.chunk.js.map": "/hangout-club/static/js/2.25592402.chunk.js.map",
+    "static/js/3.08433852.chunk.js": "/hangout-club/static/js/3.08433852.chunk.js",
+    "static/js/3.08433852.chunk.js.map": "/hangout-club/static/js/3.08433852.chunk.js.map",
+    "index.html": "/hangout-club/index.html",
+    "static/css/main.ab7136cd.chunk.css.map": "/hangout-club/static/css/main.ab7136cd.chunk.css.map",
+    "static/js/2.25592402.chunk.js.LICENSE.txt": "/hangout-club/static/js/2.25592402.chunk.js.LICENSE.txt",
+    "static/media/logo.103b5fa1.svg": "/hangout-club/static/media/logo.103b5fa1.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.23c3b12d.js",
+    "static/js/2.25592402.chunk.js",
+    "static/css/main.ab7136cd.chunk.css",
+    "static/js/main.6f296806.chunk.js"
+  ]
+}
