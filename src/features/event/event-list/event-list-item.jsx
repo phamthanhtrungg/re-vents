@@ -46,7 +46,6 @@ function EventListItem({ event, onEventOpen, handleDeleteEvent }) {
         <span>{description}</span>
         <Button
           as="a"
-          href="#"
           color="red"
           floated="right"
           onClick={() => handleDeleteEvent(event.id)}
@@ -55,7 +54,6 @@ function EventListItem({ event, onEventOpen, handleDeleteEvent }) {
         </Button>
         <Button
           as="a"
-          href="#"
           color="teal"
           floated="right"
           onClick={() => onEventOpen(event)}
