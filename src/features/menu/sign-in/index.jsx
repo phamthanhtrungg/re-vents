@@ -28,7 +28,7 @@ function SignInMenu() {
             text="Settings"
             icon="settings"
           />
-          <Dropdown.Item text="Sign Out" onC icon="power" />
+          <Dropdown.Item text="Sign Out" icon="power" />
         </Dropdown.Menu>
       </Dropdown>
     </Menu.Item>

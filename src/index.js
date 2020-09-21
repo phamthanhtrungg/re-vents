@@ -1,16 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 
 import "./index.css";
 import App from "./app/layout/app";
 import reportWebVitals from "./reportWebVitals";
 import "semantic-ui-css/semantic.min.css";
+import { store } from "./app/store/store";
 
 ReactDOM.render(
-  <HashRouter>
-    <App />
-  </HashRouter>,
+  <Provider store={store}>
+    <HashRouter>
+      <App />
+    </HashRouter>
+  </Provider>,
   document.getElementById("root")
 );
 
