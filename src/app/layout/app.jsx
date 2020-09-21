@@ -25,6 +25,7 @@ function App() {
               <Switch>
                 <Route path="/events" exact component={EventDashboard} />
                 <Route path="/events/:id" component={EventDetail} />
+                <Route path="/manage/:id" component={EventForm} />
                 <Route path="/people" component={PeopleDashboard} />
                 <Route path="/profile/:id" component={UserDetail} />
                 <Route path="/settings" component={SettingDashboard} />

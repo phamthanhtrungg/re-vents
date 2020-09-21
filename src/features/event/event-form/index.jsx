@@ -1,32 +1,35 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
-import { isEmpty, get } from "lodash";
+import { useSelector, useDispatch } from "react-redux";
+import { isEmpty } from "lodash";
+import { v4 } from "uuid";
+import { createEvent, updateEvent } from "../event.action";
 
-function EventForm({
-  selectedEvent,
-  handleCancel,
-  handleCreateEvent,
-  handleUpdateEvent,
-}) {
-  const { register, handleSubmit, errors, setValue } = useForm({
-    defaultValues: { ...selectedEvent },
-  });
+function EventForm({ match, history }) {
+  const eventId = match.params.id;
+  const events = useSelector((state) => state.events);
+  const dispatch = useDispatch();
+  const event = events.filter((event) => event.id === eventId)[0];
 
-  useEffect(() => {
-    if (!isEmpty(selectedEvent)) {
-      setValue("title", get(selectedEvent, ["title"]));
-      setValue("date", get(selectedEvent, ["date"]));
-      setValue("city", get(selectedEvent, ["city"]));
-      setValue("venue", get(selectedEvent, ["venue"]));
-      setValue("hostedBy", get(selectedEvent, ["hostedBy"]));
-    }
+  const { register, handleSubmit, errors } = useForm({
+    defaultValues: { ...event },
   });
 
   const onSubmitForm = (data) => {
     if (!isEmpty(data.id)) {
-      handleUpdateEvent(data);
-    } else handleCreateEvent(data);
+      dispatch(updateEvent(data));
+      history.goBack();
+    } else {
+      dispatch(
+        createEvent({
+          ...data,
+          id: v4(),
+          hostPhotoURL: process.env.PUBLIC_URL + "/assets/user.png",
+        })
+      );
+      history.push("/events");
+    }
   };
 
   return (
@@ -98,7 +101,12 @@ function EventForm({
         <Button positive type="submit">
           Submit
         </Button>
-        <Button style={{ marginLeft: "1rem" }} onClick={handleCancel}>
+        <Button
+          style={{ marginLeft: "1rem" }}
+          onClick={() => {
+            history.goBack();
+          }}
+        >
           Cancel
         </Button>
       </Form>

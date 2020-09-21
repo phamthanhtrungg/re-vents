@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import EventListAttendee from "./event-list-attendee";
 import moment from "moment";
 
-function EventListItem({ event, onEventOpen, handleDeleteEvent }) {
+function EventListItem({ event, handleDeleteEvent }) {
   const {
     title,
     date,

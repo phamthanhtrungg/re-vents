@@ -8,11 +8,14 @@ import App from "./app/layout/app";
 import reportWebVitals from "./reportWebVitals";
 import "semantic-ui-css/semantic.min.css";
 import { store } from "./app/store/store";
+import ScrollToTop from "./app/utils/scroll-to-top";
 
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter>
-      <App />
+      <ScrollToTop>
+        <App />
+      </ScrollToTop>
     </HashRouter>
   </Provider>,
   document.getElementById("root")

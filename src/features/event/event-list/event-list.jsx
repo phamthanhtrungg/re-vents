@@ -1,7 +1,7 @@
 import React from "react";
 import EventListItem from "./event-list-item";
 
-function EventList({ events, onEventOpen, handleDeleteEvent }) {
+function EventList({ events, handleDeleteEvent }) {
   return (
     <div>
       <h1>Event List</h1>
@@ -9,7 +9,6 @@ function EventList({ events, onEventOpen, handleDeleteEvent }) {
         <EventListItem
           key={event.id}
           event={event}
-          onEventOpen={onEventOpen}
           handleDeleteEvent={handleDeleteEvent}
         />
       ))}
