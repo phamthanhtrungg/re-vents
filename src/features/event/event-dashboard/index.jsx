@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Grid } from "semantic-ui-react";
 import EventForm from "../event-form";
 import EventList from "../event-list/event-list";
+import { v4 } from "uuid";
 
 const events = [
   {
@@ -57,6 +58,15 @@ const events = [
 function EventDashboard() {
   const [localEvents, setLocalEvents] = useState(events);
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleCreateEvent = (newEvent) => {
+    newEvent.id = v4();
+    newEvent.PhotoURL = "https://randomuser.me/api/portraits/men/20.jpg";
+    const updatedEvents = [...events, newEvent];
+    setLocalEvents(updatedEvents);
+    setIsOpen(false);
+  };
+
   return (
     <Grid>
       <Grid.Column width={10}>
@@ -76,6 +86,7 @@ function EventDashboard() {
             handleCancel={() => {
               setIsOpen(false);
             }}
+            handleCreateEvent={handleCreateEvent}
           />
         )}
       </Grid.Column>

@@ -2,12 +2,11 @@ import React from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
 
-function EventForm({ handleCancel }) {
+function EventForm({ handleCancel, handleCreateEvent }) {
   const { register, handleSubmit, errors } = useForm();
   const onSubmitForm = (data) => {
-    console.log(data);
+    handleCreateEvent(data);
   };
-  console.log(errors);
   return (
     <Segment>
       <Form onSubmit={handleSubmit(onSubmitForm)}>
@@ -17,7 +16,7 @@ function EventForm({ handleCancel }) {
             type="text"
             placeholder="First Name"
             ref={register({ required: { message: "required", value: true } })}
-            name="eventTitle"
+            name="title"
           />
           {errors.eventTitle && (
             <div className="error field">{errors.eventTitle.message}</div>
