@@ -19,7 +19,7 @@ function EventListItem({ event, handleDeleteEvent }) {
       <Segment>
         <Item.Group>
           <Item>
-            <Item.Image size="tiny" circular src={hostPhotoURL} />
+            <Item.Image size="tiny" circular src={hostPhotoURL} alt="" />
             <Item.Content>
               <Item.Header as="a">{title}</Item.Header>
               <Item.Description>

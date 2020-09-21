@@ -27,7 +27,7 @@ function EventDetailSideBar({ attendees }) {
                 >
                   Host
                 </Label>
-                <Item.Image size="tiny" src={attendee.photoURL} />
+                <Item.Image size="tiny" src={attendee.photoURL} alt="" />
                 <Item.Content verticalAlign="middle">
                   <Item.Header as="h3">{attendee.name}</Item.Header>
                 </Item.Content>
