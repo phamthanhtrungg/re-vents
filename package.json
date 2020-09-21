@@ -16,7 +16,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0-next.98",
     "redux": "^4.0.5",
-    "redux-action": "^1.2.2",
+    "redux-actions": "^2.6.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",

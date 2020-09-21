@@ -23,7 +23,7 @@ function App() {
             <NavBar />
             <Container style={{ marginTop: "5rem" }}>
               <Switch>
-                <Route path="/events" component={EventDashboard} />
+                <Route path="/events" exact component={EventDashboard} />
                 <Route path="/events/:id" component={EventDetail} />
                 <Route path="/people" component={PeopleDashboard} />
                 <Route path="/profile/:id" component={UserDetail} />
