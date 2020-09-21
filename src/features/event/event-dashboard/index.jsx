@@ -8,7 +8,7 @@ const events = [
   {
     id: "1",
     title: "Trip to Tower of London",
-    date: "2018-03-27T11:00:00+00:00",
+    date: "2018-03-27",
     category: "culture",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.",
@@ -32,7 +32,7 @@ const events = [
   {
     id: "2",
     title: "Trip to Punch and Judy Pub",
-    date: "2018-03-28T14:00:00+00:00",
+    date: "2018-03-28",
     category: "drinks",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.",
@@ -58,19 +58,52 @@ const events = [
 function EventDashboard() {
   const [localEvents, setLocalEvents] = useState(events);
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const handleCreateEvent = (newEvent) => {
     newEvent.id = v4();
     newEvent.PhotoURL = "https://randomuser.me/api/portraits/men/20.jpg";
-    const updatedEvents = [...events, newEvent];
+    const updatedEvents = [...localEvents, newEvent];
+    setSelectedEvent(null);
     setLocalEvents(updatedEvents);
     setIsOpen(false);
+  };
+
+  const handleDeleteEvent = (eventId) => {
+    setLocalEvents(localEvents.filter((event) => event.id !== eventId));
+  };
+
+  const handleOpenEvent = (eventOpen) => {
+    setSelectedEvent(eventOpen);
+    setIsOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsOpen(false);
+    setSelectedEvent(null);
+  };
+
+  const handleUpdateEvent = (updatedEvent) => {
+    setLocalEvents(
+      localEvents.map((event) => {
+        if (event.id === updatedEvent.id) {
+          return Object.assign(event, updatedEvent);
+        }
+        return event;
+      })
+    );
+    setIsOpen(false);
+    setSelectedEvent(null);
   };
 
   return (
     <Grid>
       <Grid.Column width={10}>
-        <EventList events={localEvents} />
+        <EventList
+          events={localEvents}
+          onEventOpen={handleOpenEvent}
+          handleDeleteEvent={handleDeleteEvent}
+        />
       </Grid.Column>
       <Grid.Column width={6}>
         <Button
@@ -83,10 +116,10 @@ function EventDashboard() {
         </Button>
         {isOpen && (
           <EventForm
-            handleCancel={() => {
-              setIsOpen(false);
-            }}
+            selectedEvent={selectedEvent}
+            handleCancel={handleCancel}
             handleCreateEvent={handleCreateEvent}
+            handleUpdateEvent={handleUpdateEvent}
           />
         )}
       </Grid.Column>

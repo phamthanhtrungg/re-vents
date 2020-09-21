@@ -3,17 +3,16 @@ import { Button, Icon, Item, List, Segment } from "semantic-ui-react";
 import EventListAttendee from "./event-list-attendee";
 import moment from "moment";
 
-function EventListItem({
-  title,
-  date,
-  category,
-  description,
-  city,
-  venue,
-  hostedBy,
-  hostPhotoURL,
-  attendees,
-}) {
+function EventListItem({ event, onEventOpen, handleDeleteEvent }) {
+  const {
+    title,
+    date,
+    description,
+    venue,
+    hostedBy,
+    hostPhotoURL,
+    attendees,
+  } = event;
   return (
     <Segment.Group>
       <Segment>
@@ -45,7 +44,22 @@ function EventListItem({
       </Segment>
       <Segment clearing>
         <span>{description}</span>
-        <Button as="a" href="#" color="teal" floated="right">
+        <Button
+          as="a"
+          href="#"
+          color="red"
+          floated="right"
+          onClick={() => handleDeleteEvent(event.id)}
+        >
+          Delete
+        </Button>
+        <Button
+          as="a"
+          href="#"
+          color="teal"
+          floated="right"
+          onClick={() => onEventOpen(event)}
+        >
           View
         </Button>
       </Segment>

@@ -1,15 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
+import { isEmpty, get } from "lodash";
 
-function EventForm({ handleCancel, handleCreateEvent }) {
-  const { register, handleSubmit, errors } = useForm();
+function EventForm({
+  selectedEvent,
+  handleCancel,
+  handleCreateEvent,
+  handleUpdateEvent,
+}) {
+  const { register, handleSubmit, errors, setValue } = useForm({
+    defaultValues: { ...selectedEvent },
+  });
+
+  useEffect(() => {
+    if (!isEmpty(selectedEvent)) {
+      setValue("title", get(selectedEvent, ["title"]));
+      setValue("date", get(selectedEvent, ["date"]));
+      setValue("city", get(selectedEvent, ["city"]));
+      setValue("venue", get(selectedEvent, ["venue"]));
+      setValue("hostedBy", get(selectedEvent, ["hostedBy"]));
+    }
+  });
+
   const onSubmitForm = (data) => {
-    handleCreateEvent(data);
+    if (!isEmpty(data.id)) {
+      handleUpdateEvent(data);
+    } else handleCreateEvent(data);
   };
+
   return (
     <Segment>
       <Form onSubmit={handleSubmit(onSubmitForm)}>
+        <Form.Field>
+          <input ref={register} name="id" hidden />
+        </Form.Field>
         <Form.Field>
           <label htmlFor="">Event title</label>
           <input
