@@ -1,10 +1,24 @@
-import React from "react";
-import { Button, Form, Segment } from "semantic-ui-react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
+import { Button, Form, Segment, Grid, Header } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { isEmpty } from "lodash";
 import { v4 } from "uuid";
 import { createEvent, updateEvent } from "../event.action";
+import TextInput from "../../../app/common/form/text-input";
+import TextArea from "../../../app/common/form/text-area";
+import SelectInput from "../../../app/common/form/select-input";
+import DateInputPicker from "../../../app/common/form/date-picker";
+
+const category = [
+  { key: "drinks", text: "Drinks", value: "drinks" },
+  { key: "culture", text: "Culture", value: "culture" },
+  { key: "film", text: "Film", value: "film" },
+  { key: "food", text: "Food", value: "food" },
+  { key: "music", text: "Music", value: "music" },
+  { key: "travel", text: "Travel", value: "travel" },
+];
 
 function EventForm({ match, history }) {
   const eventId = match.params.id;
@@ -12,9 +26,20 @@ function EventForm({ match, history }) {
   const dispatch = useDispatch();
   const event = events.filter((event) => event.id === eventId)[0];
 
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors, setValue, trigger, watch } = useForm({
     defaultValues: { ...event },
   });
+
+  useEffect(() => {
+    register(
+      { name: "category" },
+      { required: { message: "required", value: true } }
+    );
+    register(
+      { name: "date" },
+      { required: { message: "required", value: true } }
+    );
+  }, []);
 
   const onSubmitForm = (data) => {
     if (!isEmpty(data.id)) {
@@ -32,85 +57,95 @@ function EventForm({ match, history }) {
     }
   };
 
+  console.log(watch());
   return (
-    <Segment>
-      <Form onSubmit={handleSubmit(onSubmitForm)}>
-        <Form.Field>
-          <input ref={register} name="id" hidden />
-        </Form.Field>
-        <Form.Field>
-          <label htmlFor="">Event title</label>
-          <input
-            type="text"
-            placeholder="First Name"
-            ref={register({ required: { message: "required", value: true } })}
-            name="title"
-          />
-          {errors.eventTitle && (
-            <div className="error field">{errors.eventTitle.message}</div>
-          )}
-        </Form.Field>
-        <Form.Field>
-          <label htmlFor="">Event Date</label>
-          <input
-            type="date"
-            ref={register({ required: { message: "required", value: true } })}
-            name="date"
-          />
-          {errors.date && (
-            <div className="error field">{errors.date.message}</div>
-          )}
-        </Form.Field>
-        <Form.Field>
-          <label htmlFor="">City</label>
-          <input
-            type="text"
-            placeholder="City event is taking place"
-            ref={register({ required: { message: "required", value: true } })}
-            name="city"
-          />
-          {errors.city && (
-            <div className="error field">{errors.city.message}</div>
-          )}
-        </Form.Field>
-        <Form.Field>
-          <label htmlFor="">Venue</label>
-          <input
-            type="text"
-            placeholder="Enter the Venue of the event"
-            ref={register({ required: { message: "required", value: true } })}
-            name="venue"
-          />
+    <Grid>
+      <Grid.Column width={10}>
+        <Segment>
+          <Header sub color="teal">
+            Event Details
+          </Header>
+          <Form onSubmit={handleSubmit(onSubmitForm)}>
+            <Form.Field>
+              <input ref={register} name="id" hidden />
+            </Form.Field>
+            <TextInput
+              name="title"
+              type="text"
+              placeholder="Give your event a name"
+              register={register({
+                required: { message: "required", value: true },
+              })}
+              error={errors?.title?.message || ""}
+            />
+            <SelectInput
+              options={category}
+              value={watch("category")}
+              name="category"
+              type="text"
+              placeholder="What's your event about?"
+              error={errors?.category?.message || ""}
+              setValue={setValue}
+              triggerValidation={trigger}
+            />
 
-          {errors.venue && (
-            <div className="error field">{errors.venue.message}</div>
-          )}
-        </Form.Field>
-        <Form.Field>
-          <label htmlFor="">Hosted By</label>
-          <input
-            type="text"
-            placeholder="Enter the name of the person hosting"
-            ref={register({ required: { message: "required", value: true } })}
-            name="hostedBy"
-          />
-          {errors.hostedBy && (
-            <div className="error field">{errors.hostedBy.message}</div>
-          )}
-        </Form.Field>
-        <Button positive type="submit">
-          Submit
-        </Button>
-        <Button
-          style={{ marginLeft: "1rem" }}
-          onClick={() => {
-            history.goBack();
-          }}
-        >
-          Cancel
-        </Button>
-      </Form>
-    </Segment>
+            <TextArea
+              rows={6}
+              name="description"
+              type="description"
+              placeholder="Tell us about your event"
+              register={register({
+                required: { message: "required", value: true },
+              })}
+              error={errors?.title?.message || ""}
+            />
+
+            <Header sub color="teal">
+              Event Location Details
+            </Header>
+
+            <TextInput
+              name="city"
+              type="text"
+              placeholder="City event is taking place"
+              register={register({
+                required: { message: "required", value: true },
+              })}
+              error={errors?.city?.message || ""}
+            />
+
+            <TextInput
+              name="venue"
+              type="text"
+              placeholder="Enter the Venue of the event"
+              register={register({
+                required: { message: "required", value: true },
+              })}
+              error={errors?.venue?.message || ""}
+            />
+            <DateInputPicker
+              value={watch("date")}
+              name="date"
+              placeholder="Event date"
+              error={errors?.category?.message || ""}
+              setValue={setValue}
+              triggerValidation={trigger}
+            />
+            <Button positive type="submit">
+              Submit
+            </Button>
+            <Button
+              style={{ marginLeft: "1rem" }}
+              onClick={() => {
+                history.goBack();
+              }}
+            >
+              Cancel
+            </Button>
+          </Form>
+        </Segment>
+      </Grid.Column>
+    </Grid>
   );
 }
 

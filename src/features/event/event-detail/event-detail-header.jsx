@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Segment, Image, Item, Button, Header } from "semantic-ui-react";
+import moment from "moment";
 
 const eventImageTextStyle = {
   position: "absolute",
@@ -11,6 +12,7 @@ const eventImageTextStyle = {
 };
 
 function EventDetailHeader({ event }) {
+  console.log(event.date);
   return (
     <Segment.Group>
       <Segment basic attached="top" style={{ padding: "0" }}>
@@ -25,7 +27,7 @@ function EventDetailHeader({ event }) {
                   content={event.title}
                   style={{ color: "white" }}
                 />
-                <p>{event.date}</p>
+                <p>{moment(event.date).format("DD/MM/yyyy HH:mm")}</p>
                 <p>
                   Hosted by <strong>{event.hostedBy}</strong>
                 </p>

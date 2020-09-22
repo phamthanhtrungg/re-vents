@@ -1,5 +1,6 @@
 import React from "react";
 import { Segment, Grid, Icon, Button } from "semantic-ui-react";
+import moment from "moment";
 
 function EventDetailInfo({ event }) {
   return (
@@ -20,7 +21,7 @@ function EventDetailInfo({ event }) {
             <Icon name="calendar" size="large" color="teal" />
           </Grid.Column>
           <Grid.Column width={15}>
-            <span>{event.date}</span>
+            <span>{moment(event.date).format("DD/MM/yyyy HH:mm")}</span>
           </Grid.Column>
         </Grid>
       </Segment>
