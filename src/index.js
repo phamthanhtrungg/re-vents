@@ -9,6 +9,9 @@ import reportWebVitals from "./reportWebVitals";
 import "semantic-ui-css/semantic.min.css";
 import { store } from "./app/store/store";
 import ScrollToTop from "./app/utils/scroll-to-top";
+import { loadEvents } from "./features/event/event.action";
+
+store.dispatch(loadEvents());
 
 ReactDOM.render(
   <Provider store={store}>
