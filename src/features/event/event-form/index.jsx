@@ -40,6 +40,9 @@ function EventForm({ match, history }) {
       { name: "date" },
       { required: { message: "required", value: true } }
     );
+    register({ name: "venue" }, { required: true });
+    register({ name: "lat" }, { required: true });
+    register({ name: "lng" }, { required: true });
   }, []);
 
   const onSubmitForm = (data) => {
@@ -57,15 +60,14 @@ function EventForm({ match, history }) {
       history.push("/events");
     }
   };
-
   return (
     <Grid>
       <Grid.Column width={10}>
         <Segment>
-          <Header sub color="teal">
-            Event Details
-          </Header>
           <Form onSubmit={handleSubmit(onSubmitForm)}>
+            <Header sub color="teal">
+              Event Details
+            </Header>
             <Form.Field>
               <input ref={register} name="id" hidden />
             </Form.Field>
@@ -100,32 +102,21 @@ function EventForm({ match, history }) {
               error={errors?.title?.message || ""}
             />
 
-            <Header sub color="teal">
+            <Header sub color="teal" style={{ marginBottom: "1rem" }}>
               Event Location Details
             </Header>
+
             <PlaceInput
-              name="city"
-              type="text"
-              placeholder="City event is taking place"
-              register={register({
-                required: { message: "required", value: true },
-              })}
-              error={errors?.city?.message || ""}
+              placeholder="Venue event is taking place"
+              setValue={setValue}
+              error={errors?.venue && errors.lat && errors.lng}
+              value={watch("venue")}
             />
 
-            <TextInput
-              name="venue"
-              type="text"
-              placeholder="Enter the Venue of the event"
-              register={register({
-                required: { message: "required", value: true },
-              })}
-              error={errors?.venue?.message || ""}
-            />
             <DateInputPicker
               value={watch("date")}
               name="date"
-              placeholder="Event date"
+              placeholder="Date and Time of event"
               error={errors?.category?.message || ""}
               setValue={setValue}
               triggerValidation={trigger}

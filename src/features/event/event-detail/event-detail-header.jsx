@@ -12,7 +12,6 @@ const eventImageTextStyle = {
 };
 
 function EventDetailHeader({ event }) {
-  console.log(event.date);
   return (
     <Segment.Group>
       <Segment basic attached="top" style={{ padding: "0" }}>

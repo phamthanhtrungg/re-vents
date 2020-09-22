@@ -1,5 +1,5 @@
 import React from "react";
-import { Form } from "semantic-ui-react";
+import { Form, Label } from "semantic-ui-react";
 import { isEmpty } from "lodash";
 
 function SelectInput({
@@ -12,17 +12,23 @@ function SelectInput({
   options,
 }) {
   return (
-    <Form.Select
-      value={value}
-      error={!isEmpty(error)}
-      name={name}
-      placeholder={placeholder}
-      onChange={async (e, { name, value }) => {
-        setValue(name, value);
-        await triggerValidation(name);
-      }}
-      options={options}
-    />
+    <Form.Field error={!isEmpty(error)}>
+      <Form.Select
+        value={value}
+        name={name}
+        placeholder={placeholder}
+        onChange={async (e, { name, value }) => {
+          setValue(name, value);
+          await triggerValidation(name);
+        }}
+        options={options}
+      />
+      {!isEmpty(error) && (
+        <Label basic color="red" pointing>
+          {error}
+        </Label>
+      )}
+    </Form.Field>
   );
 }
 

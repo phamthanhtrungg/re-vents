@@ -2,7 +2,7 @@ import React from "react";
 import { isEmpty } from "lodash";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FormField } from "semantic-ui-react";
+import { FormField, Label } from "semantic-ui-react";
 
 function DateInputPicker({
   placeholder,
@@ -20,7 +20,6 @@ function DateInputPicker({
         name={name}
         selected={value ? new Date(value) : null}
         onChange={async (date) => {
-          console.log(date);
           setValue(name, date);
           await triggerValidation(name);
         }}
@@ -29,6 +28,11 @@ function DateInputPicker({
         showTimeSelect
         {...rest}
       />
+      {!isEmpty(error) && (
+        <Label basic color="red" pointing>
+          {error}
+        </Label>
+      )}
     </FormField>
   );
 }
