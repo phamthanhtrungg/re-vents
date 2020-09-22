@@ -3,8 +3,10 @@ import { Button, Container, Menu } from "semantic-ui-react";
 import { NavLink, Link } from "react-router-dom";
 import SignOutMenu from "../../menu/sign-out";
 import SignInMenu from "../../menu/sign-in";
+import { useSelector } from "react-redux";
 
 function NavBar() {
+  const { authenticated } = useSelector((state) => state.auth);
   return (
     <Menu inverted fixed="top">
       <Container>
@@ -28,9 +30,7 @@ function NavBar() {
             content="Create Event"
           />
         </Menu.Item>
-        <SignInMenu />
-
-        <SignOutMenu />
+        {!authenticated ? <SignInMenu /> : <SignOutMenu />}
       </Container>
     </Menu>
   );
