@@ -28,8 +28,9 @@ function NavBar() {
             content="Create Event"
           />
         </Menu.Item>
-        <SignOutMenu />
         <SignInMenu />
+
+        <SignOutMenu />
       </Container>
     </Menu>
   );

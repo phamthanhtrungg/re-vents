@@ -9,10 +9,12 @@ import UserDetail from "../../features/user/user-detail";
 import SettingDashboard from "../../features/user/settings/setting-dashboard";
 import EventForm from "../../features/event/event-form";
 import Home from "../../features/home";
+import ModalManager from "../../features/modal/modal-manager";
 
 function App() {
   return (
     <div>
+      <ModalManager />
       <Switch>
         <Route path="/" exact component={Home} />
       </Switch>
