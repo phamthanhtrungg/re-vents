@@ -10,6 +10,7 @@ function EventListItem({ event, handleDeleteEvent }) {
     date,
     description,
     venue,
+    city,
     hostedBy,
     hostPhotoURL,
     attendees,
@@ -32,7 +33,7 @@ function EventListItem({ event, handleDeleteEvent }) {
       <Segment>
         <span>
           <Icon name="clock" /> {moment(date).fromNow()} |
-          <Icon name="marker" /> {venue}
+          <Icon name="marker" /> {venue}, {city}
         </span>
       </Segment>
       <Segment secondary>

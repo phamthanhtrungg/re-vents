@@ -20,7 +20,6 @@ jobs:
 
         env:
           NODE_ENV: production
-
         #   REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
         #   REACT_APP_AUTH_DOMAIN: ${{ secrets.REACT_APP_AUTH_DOMAIN }}
         #   REACT_APP_DATABASE_URL: ${{ secrets.REACT_APP_DATABASE_URL }}

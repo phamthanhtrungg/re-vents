@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -22,4 +26,33 @@ code {
 
 .react-datepicker-wrapper {
   width: 100%;
+}
+
+.suggestion-container {
+  max-height: 250px;
+  overflow: auto;
+  position: absolute;
+  z-index: 1;
+  background: white;
+  width: 100%;
+  border: 1px solid #ccc;
+}
+.suggestion-item {
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.suggestion-item span {
+  display: block;
+  padding: 0.5rem;
+}
+.suggestion-item:hover {
+  background-color: #ccc;
+}
+.react-autosuggest__suggestions-container:hover {
+  border: 1px solid #ccc;
+}
+.react-autosuggest__suggestions-list {
+  padding: 0;
+  margin: 0;
 }

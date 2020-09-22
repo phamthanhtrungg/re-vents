@@ -2,7 +2,6 @@ import React from "react";
 import { isEmpty } from "lodash";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment";
 import { FormField } from "semantic-ui-react";
 
 function DateInputPicker({
@@ -15,7 +14,6 @@ function DateInputPicker({
   value,
   ...rest
 }) {
-  console.log(moment(value).format());
   return (
     <FormField error={!isEmpty(error)}>
       <DatePicker

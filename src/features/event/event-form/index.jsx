@@ -10,6 +10,7 @@ import TextInput from "../../../app/common/form/text-input";
 import TextArea from "../../../app/common/form/text-area";
 import SelectInput from "../../../app/common/form/select-input";
 import DateInputPicker from "../../../app/common/form/date-picker";
+import PlaceInput from "../../../app/common/form/place-input";
 
 const category = [
   { key: "drinks", text: "Drinks", value: "drinks" },
@@ -57,7 +58,6 @@ function EventForm({ match, history }) {
     }
   };
 
-  console.log(watch());
   return (
     <Grid>
       <Grid.Column width={10}>
@@ -103,8 +103,7 @@ function EventForm({ match, history }) {
             <Header sub color="teal">
               Event Location Details
             </Header>
-
-            <TextInput
+            <PlaceInput
               name="city"
               type="text"
               placeholder="City event is taking place"
