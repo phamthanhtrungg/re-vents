@@ -139,6 +139,7 @@ function EventForm({ match, history }) {
             </Header>
 
             <PlaceInput
+              name="venue"
               placeholder="Venue event is taking place"
               setValue={setValue}
               error={errors?.venue?.message}

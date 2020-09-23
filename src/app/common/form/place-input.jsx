@@ -10,7 +10,7 @@ const searchClient = algoliasearch(
   "6be0576ff61c053d5f9a3225e2a90f76"
 );
 
-function PlaceInput({ error, setValue, placeholder, value }) {
+function PlaceInput({ name, error, setValue, placeholder, value }) {
   return (
     <Form.Field error={!isEmpty(error)}>
       <InstantSearch indexName="airports" searchClient={searchClient}>
@@ -26,7 +26,7 @@ function PlaceInput({ error, setValue, placeholder, value }) {
               value,
               latlng: { lat, lng },
             } = e.suggestion;
-            setValue("venue", value);
+            setValue(name, value);
             setValue("lat", lat);
             setValue("lng", lng);
           }}
