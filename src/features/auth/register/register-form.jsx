@@ -5,9 +5,7 @@ import TextInput from "../../../app/common/form/text-input";
 
 const RegisterForm = () => {
   const { register, handleSubmit } = useForm();
-  const handleRegister = (data) => {
-    console.log(data);
-  };
+  const handleRegister = (data) => {};
   return (
     <Form error size="large" onSubmit={handleSubmit(handleRegister)}>
       <Segment>

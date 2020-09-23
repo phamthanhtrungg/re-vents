@@ -12,7 +12,6 @@ function ModalManager() {
   const modals = useSelector((state) => state.modals);
   let renderedModal = null;
   if (modals) {
-    console.log(modals.modalType);
     const { modalType, modalProps } = modals;
     const ModalComponent = modalLookUp[modalType];
     renderedModal = <ModalComponent {...modalProps} />;

@@ -1,9 +1,9 @@
 import { handleActions } from "redux-actions";
 import {
-  createEvent,
+  createEventType,
   deleteEvent,
   fetchEvents,
-  updateEvent,
+  updateEventType,
 } from "./event.action";
 
 const initialState = [];
@@ -13,10 +13,10 @@ export const eventReducer = handleActions(
     [fetchEvents]: (state, { payload }) => {
       return payload;
     },
-    [createEvent]: (state, { payload }) => {
+    [createEventType]: (state, { payload }) => {
       return [...state, payload];
     },
-    [updateEvent]: (state, { payload }) => {
+    [updateEventType]: (state, { payload }) => {
       return state.map((event) => {
         if (event.id === payload.id) {
           return Object.assign(event, payload);

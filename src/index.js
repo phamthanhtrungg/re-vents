@@ -6,10 +6,13 @@ import { Provider } from "react-redux";
 import "./index.css";
 import App from "./app/layout/app";
 import reportWebVitals from "./reportWebVitals";
-import "semantic-ui-css/semantic.min.css";
 import { store } from "./app/store/store";
-import ScrollToTop from "./app/utils/scroll-to-top";
 import { loadEvents } from "./features/event/event.action";
+
+import ReduxToastr from "react-redux-toastr";
+import ScrollToTop from "./app/utils/scroll-to-top";
+import "semantic-ui-css/semantic.min.css";
+import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
 
 store.dispatch(loadEvents());
 
@@ -17,6 +20,12 @@ ReactDOM.render(
   <Provider store={store}>
     <HashRouter>
       <ScrollToTop>
+        <ReduxToastr
+          timeOut={4000}
+          position="top-right"
+          transitionIn="fadeIn"
+          transitionOut="fadeOut"
+        />
         <App />
       </ScrollToTop>
     </HashRouter>

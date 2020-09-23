@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import EventList from "../event-list/event-list";
 import { deleteEvent } from "../event.action";
 import LoadingComponent from "../../../app/layout/loading";
+import EventActivity from "../event-activity";
 
 function EventDashboard() {
   const events = useSelector((state) => state.events);
@@ -20,7 +21,9 @@ function EventDashboard() {
       <Grid.Column width={10}>
         <EventList events={events} handleDeleteEvent={handleDeleteEvent} />
       </Grid.Column>
-      <Grid.Column width={6}></Grid.Column>
+      <Grid.Column width={6}>
+        <EventActivity />
+      </Grid.Column>
     </Grid>
   );
 }

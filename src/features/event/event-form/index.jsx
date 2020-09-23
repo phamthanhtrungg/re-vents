@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Segment, Grid, Header } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,6 +11,7 @@ import TextArea from "../../../app/common/form/text-area";
 import SelectInput from "../../../app/common/form/select-input";
 import DateInputPicker from "../../../app/common/form/date-picker";
 import PlaceInput from "../../../app/common/form/place-input";
+import LoadingComponent from "../../../app/layout/loading";
 
 const category = [
   { key: "drinks", text: "Drinks", value: "drinks" },
@@ -23,11 +24,22 @@ const category = [
 
 function EventForm({ match, history }) {
   const eventId = match.params.id;
+  const [mounted, setMounted] = useState(false);
+
   const events = useSelector((state) => state.events);
   const dispatch = useDispatch();
+
   const event = events.filter((event) => event.id === eventId)[0];
 
-  const { register, handleSubmit, errors, setValue, trigger, watch } = useForm({
+  const {
+    register,
+    handleSubmit,
+    errors,
+    setValue,
+    trigger,
+    watch,
+    reset,
+  } = useForm({
     defaultValues: { ...event },
   });
 
@@ -43,7 +55,14 @@ function EventForm({ match, history }) {
     register({ name: "venue" }, { required: true });
     register({ name: "lat" }, { required: true });
     register({ name: "lng" }, { required: true });
+    setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!isEmpty(event) && mounted) {
+      reset({ ...event });
+    }
+  }, [event]);
 
   const onSubmitForm = (data) => {
     if (!isEmpty(data.id)) {
@@ -60,7 +79,9 @@ function EventForm({ match, history }) {
       history.push("/events");
     }
   };
-  return (
+  return isEmpty(event) && !mounted ? (
+    <LoadingComponent />
+  ) : (
     <Grid>
       <Grid.Column width={10}>
         <Segment>
