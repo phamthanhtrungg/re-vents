@@ -20,6 +20,17 @@ const rrfConfig = {
   userProfile: "users",
   attachAuthIsReady: true,
   useFirestoreForProfile: true,
+  profileFactory: (userData, profileData, firebase) => {
+    const { displayName } = userData;
+    const { email, avatarUrl } = profileData;
+
+    return {
+      displayName,
+      email,
+      photoURL: avatarUrl,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+  },
 };
 
 const rrfProps = {

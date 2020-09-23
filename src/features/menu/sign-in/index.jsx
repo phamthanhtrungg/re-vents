@@ -6,7 +6,7 @@ import { Menu, Image, Dropdown } from "semantic-ui-react";
 import { resetAuthState } from "../../auth/auth.action";
 
 function SignInMenu() {
-  const { auth } = useSelector((state) => state.firebase);
+  const { profile } = useSelector((state) => state.firebase);
   const dispatch = useDispatch();
   const firebase = useFirebase();
   const history = useHistory();
@@ -15,10 +15,10 @@ function SignInMenu() {
       <Image
         avatar
         spaced="right"
-        src={process.env.PUBLIC_URL + "/assets/user.png"}
+        src={profile.photoURL || process.env.PUBLIC_URL + "/assets/user.png"}
         alt=""
       />
-      <Dropdown pointing="top left" text={auth.email}>
+      <Dropdown pointing="top left" text={profile.displayName}>
         <Dropdown.Menu>
           <Dropdown.Item
             as={Link}

@@ -1,9 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Segment, Button, Message } from "semantic-ui-react";
+import { Form, Segment, Button, Message, Divider } from "semantic-ui-react";
 import TextInput from "../../../app/common/form/text-input";
 import { login } from "../auth.action";
+import SocialLogin from "../social-login";
 
 const LoginForm = () => {
   const { register, handleSubmit } = useForm();
@@ -40,6 +41,8 @@ const LoginForm = () => {
         <Button fluid size="large" color="teal">
           Login
         </Button>
+        <Divider content="Or" horizontal />
+        <SocialLogin />
       </Segment>
     </Form>
   );

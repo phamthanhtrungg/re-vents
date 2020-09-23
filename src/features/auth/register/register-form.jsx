@@ -1,9 +1,10 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Segment, Button, Message } from "semantic-ui-react";
+import { Form, Segment, Button, Message, Divider } from "semantic-ui-react";
 import TextInput from "../../../app/common/form/text-input";
 import { registerUser } from "../auth.action";
+import SocialLogin from "../social-login";
 
 const RegisterForm = () => {
   const { register, handleSubmit } = useForm();
@@ -38,6 +39,7 @@ const RegisterForm = () => {
           placeholder="Password"
           register={register({
             required: { message: "Required", value: true },
+            minLength: { message: "At lease 6 characters", value: 6 },
           })}
         />
         {registerUserError && (
@@ -50,6 +52,8 @@ const RegisterForm = () => {
         <Button fluid size="large" color="teal">
           Register
         </Button>
+        <Divider content="Or" horizontal />
+        <SocialLogin />
       </Segment>
     </Form>
   );
