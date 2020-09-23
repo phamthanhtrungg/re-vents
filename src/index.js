@@ -19,6 +19,7 @@ import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
 const rrfConfig = {
   userProfile: "users",
   attachAuthIsReady: true,
+  firebaseStateName: "firebase",
   useFirestoreForProfile: true,
   profileFactory: (userData, profileData, firebase) => {
     const { displayName } = userData;

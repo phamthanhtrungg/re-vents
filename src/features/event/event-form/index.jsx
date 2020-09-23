@@ -46,13 +46,16 @@ function EventForm({ match, history }) {
   useEffect(() => {
     register(
       { name: "category" },
-      { required: { message: "required", value: true } }
+      { required: { message: "Please choose a category", value: true } }
     );
     register(
       { name: "date" },
-      { required: { message: "required", value: true } }
+      { required: { message: "Please choose a valid date", value: true } }
     );
-    register({ name: "venue" }, { required: true });
+    register(
+      { name: "venue" },
+      { required: { message: "Please chose a valid venue", value: "true" } }
+    );
     register({ name: "lat" }, { required: true });
     register({ name: "lng" }, { required: true });
 
@@ -103,9 +106,9 @@ function EventForm({ match, history }) {
             <TextInput
               name="title"
               type="text"
-              placeholder="Give your event a name"
+              placeholder="Give your event a title"
               register={register({
-                required: { message: "required", value: true },
+                required: { message: "Please enter event title", value: true },
               })}
               error={errors?.title?.message || ""}
             />
@@ -138,8 +141,8 @@ function EventForm({ match, history }) {
             <PlaceInput
               placeholder="Venue event is taking place"
               setValue={setValue}
-              error={errors?.venue && errors.lat && errors.lng}
-              value={watch("venue")}
+              error={errors?.venue?.message}
+              value={watch("venue") || ""}
             />
 
             <DateInputPicker

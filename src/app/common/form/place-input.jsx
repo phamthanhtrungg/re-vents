@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { Form } from "semantic-ui-react";
+import { Form, Label } from "semantic-ui-react";
 import { isEmpty } from "lodash";
 import algoliasearch from "algoliasearch/lite";
 import { InstantSearch } from "react-instantsearch-dom";
@@ -33,6 +33,11 @@ function PlaceInput({ error, setValue, placeholder, value }) {
           placeholder={placeholder}
         />
       </InstantSearch>
+      {!isEmpty(error) && (
+        <Label basic color="red" pointing>
+          {error}
+        </Label>
+      )}
     </Form.Field>
   );
 }

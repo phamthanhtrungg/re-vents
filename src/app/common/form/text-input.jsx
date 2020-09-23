@@ -9,10 +9,11 @@ const TextInput = ({
   placeholder = "",
   type = "text",
   name,
+  fieldProps,
   ...otherProps
 }) => {
   return (
-    <Form.Field error={!isEmpty(error)} width={width}>
+    <Form.Field error={!isEmpty(error)} width={width} {...fieldProps}>
       <input
         type={type}
         name={name}

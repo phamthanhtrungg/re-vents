@@ -7,7 +7,10 @@ import { registerUser } from "../auth.action";
 import SocialLogin from "../social-login";
 
 const RegisterForm = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState } = useForm({
+    mode: "all",
+    reValidateMode: "onChange",
+  });
   const { registerUserError } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -49,7 +52,13 @@ const RegisterForm = () => {
             list={[registerUserError.message]}
           />
         )}
-        <Button fluid size="large" color="teal">
+        <Button
+          fluid
+          size="large"
+          color="teal"
+          disabled={!formState.isValid || formState.isSubmitting}
+          loading={formState.isSubmitting}
+        >
           Register
         </Button>
         <Divider content="Or" horizontal />

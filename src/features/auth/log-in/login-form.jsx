@@ -7,7 +7,10 @@ import { login } from "../auth.action";
 import SocialLogin from "../social-login";
 
 const LoginForm = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState } = useForm({
+    mode: "all",
+    reValidateMode: "onChange",
+  });
   const { logInError } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -38,7 +41,13 @@ const LoginForm = () => {
         {logInError && (
           <Message error header="Log in failed" list={[logInError?.message]} />
         )}
-        <Button fluid size="large" color="teal">
+        <Button
+          fluid
+          size="large"
+          color="teal"
+          disabled={!formState.isValid || formState.isSubmitting}
+          loading={formState.isSubmitting}
+        >
           Login
         </Button>
         <Divider content="Or" horizontal />
