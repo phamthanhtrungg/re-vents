@@ -1,27 +1,53 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Menu, Button } from "semantic-ui-react";
-import { openModal } from "../../modal/modal.action";
+import { useDispatch, useSelector } from "react-redux";
+import { useFirebase } from "react-redux-firebase";
+import { Link, useHistory } from "react-router-dom";
+import { Menu, Image, Dropdown } from "semantic-ui-react";
+import { resetAuthState } from "../../auth/auth.action";
 
-function SignOutMenu() {
+function SignInMenu() {
+  const { auth } = useSelector((state) => state.firebase);
   const dispatch = useDispatch();
+  const firebase = useFirebase();
+  const history = useHistory();
   return (
     <Menu.Item position="right">
-      <Button
-        basic
-        inverted
-        content="Login"
-        onClick={() => dispatch(openModal({ modalType: "LogInModal" }))}
+      <Image
+        avatar
+        spaced="right"
+        src={process.env.PUBLIC_URL + "/assets/user.png"}
+        alt=""
       />
-      <Button
-        basic
-        inverted
-        content="Register"
-        style={{ marginLeft: "1rem" }}
-        onClick={() => dispatch(openModal({ modalType: "RegisterModal" }))}
-      />
+      <Dropdown pointing="top left" text={auth.email}>
+        <Dropdown.Menu>
+          <Dropdown.Item
+            as={Link}
+            to="/create-event"
+            text="Create Event"
+            icon="plus"
+          />
+          <Dropdown.Item text="My Events" icon="calendar" />
+          <Dropdown.Item text="My Network" icon="users" />
+          <Dropdown.Item text="My Profile" icon="user" />
+          <Dropdown.Item
+            as={Link}
+            to="/settings"
+            text="Settings"
+            icon="settings"
+          />
+          <Dropdown.Item
+            text="Sign Out"
+            icon="power"
+            onClick={() => {
+              firebase.auth().signOut();
+              history.push("/");
+              dispatch(resetAuthState());
+            }}
+          />
+        </Dropdown.Menu>
+      </Dropdown>
     </Menu.Item>
   );
 }
 
-export default SignOutMenu;
+export default SignInMenu;

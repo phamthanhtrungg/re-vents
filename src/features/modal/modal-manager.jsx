@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useSelector } from "react-redux";
 import LogInModal from "./login-modal";
@@ -10,6 +11,7 @@ const modalLookUp = {
 
 function ModalManager() {
   const modals = useSelector((state) => state.modals);
+
   let renderedModal = null;
   if (modals) {
     const { modalType, modalProps } = modals;

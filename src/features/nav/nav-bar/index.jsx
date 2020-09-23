@@ -6,7 +6,8 @@ import SignInMenu from "../../menu/sign-in";
 import { useSelector } from "react-redux";
 
 function NavBar() {
-  const { authenticated } = useSelector((state) => state.auth);
+  const { auth } = useSelector((state) => state.firebase);
+
   return (
     <Menu inverted fixed="top">
       <Container>
@@ -30,7 +31,7 @@ function NavBar() {
             content="Create Event"
           />
         </Menu.Item>
-        {!authenticated ? <SignInMenu /> : <SignOutMenu />}
+        {auth.isLoaded && !auth.isEmpty ? <SignInMenu /> : <SignOutMenu />}
       </Container>
     </Menu>
   );

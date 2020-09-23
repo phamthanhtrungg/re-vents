@@ -1,49 +1,33 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { Menu, Image, Dropdown } from "semantic-ui-react";
-import { signOutUser } from "../../auth/auth.action";
+import { useDispatch } from "react-redux";
+import { Menu, Button } from "semantic-ui-react";
+import { resetAuthState } from "../../auth/auth.action";
+import { openModal } from "../../modal/modal.action";
 
-function SignInMenu() {
-  const { currentUser } = useSelector((state) => state.auth);
+function SignOutMenu() {
   const dispatch = useDispatch();
-
   return (
     <Menu.Item position="right">
-      <Image
-        avatar
-        spaced="right"
-        src={process.env.PUBLIC_URL + "/assets/user.png"}
-        alt=""
+      <Button
+        basic
+        inverted
+        content="Login"
+        onClick={() => {
+          dispatch(resetAuthState());
+          dispatch(openModal({ modalType: "LogInModal" }));
+        }}
       />
-      <Dropdown pointing="top left" text={currentUser.email}>
-        <Dropdown.Menu>
-          <Dropdown.Item
-            as={Link}
-            to="/create-event"
-            text="Create Event"
-            icon="plus"
-          />
-          <Dropdown.Item text="My Events" icon="calendar" />
-          <Dropdown.Item text="My Network" icon="users" />
-          <Dropdown.Item text="My Profile" icon="user" />
-          <Dropdown.Item
-            as={Link}
-            to="/settings"
-            text="Settings"
-            icon="settings"
-          />
-          <Dropdown.Item
-            text="Sign Out"
-            icon="power"
-            onClick={() => {
-              dispatch(signOutUser());
-            }}
-          />
-        </Dropdown.Menu>
-      </Dropdown>
+      <Button
+        basic
+        inverted
+        content="Register"
+        style={{ marginLeft: "1rem" }}
+        onClick={() => {
+          dispatch(openModal({ modalType: "RegisterModal" }));
+        }}
+      />
     </Menu.Item>
   );
 }
 
-export default SignInMenu;
+export default SignOutMenu;

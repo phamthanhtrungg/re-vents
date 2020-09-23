@@ -31,15 +31,15 @@ function EventListItem({ event, handleDeleteEvent }) {
       </Segment>
       <Segment>
         <span>
-          <Icon name="clock" /> {moment(date).fromNow()} |
+          <Icon name="clock" /> {moment(date.toDate()).fromNow()} |
           <Icon name="marker" /> {venue}
         </span>
       </Segment>
       <Segment secondary>
         <List horizontal>
           {attendees &&
-            attendees.map((attendee) => (
-              <EventListAttendee key={attendee.id} {...attendee} />
+            Object.values(attendees).map((attendee, id) => (
+              <EventListAttendee key={attendee.name + id} {...attendee} />
             ))}
         </List>
       </Segment>

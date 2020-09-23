@@ -1,18 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { Form, Segment, Button } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Form, Segment, Button, Message } from "semantic-ui-react";
 import TextInput from "../../../app/common/form/text-input";
-import { closeModal } from "../../modal/modal.action";
-import { logInUser } from "../auth.action";
+import { login } from "../auth.action";
 
 const LoginForm = () => {
   const { register, handleSubmit } = useForm();
+  const { logInError } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const handleLogIn = (data) => {
-    dispatch(logInUser(data));
-    dispatch(closeModal());
+    dispatch(login(data));
   };
 
   return (
@@ -35,6 +34,9 @@ const LoginForm = () => {
             required: { message: "Required", value: true },
           })}
         />
+        {logInError && (
+          <Message error header="Log in failed" list={[logInError?.message]} />
+        )}
         <Button fluid size="large" color="teal">
           Login
         </Button>

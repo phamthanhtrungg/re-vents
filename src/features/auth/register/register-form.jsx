@@ -1,11 +1,18 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Form, Segment, Button } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Form, Segment, Button, Message } from "semantic-ui-react";
 import TextInput from "../../../app/common/form/text-input";
+import { registerUser } from "../auth.action";
 
 const RegisterForm = () => {
   const { register, handleSubmit } = useForm();
-  const handleRegister = (data) => {};
+  const { registerUserError } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const handleRegister = (data) => {
+    dispatch(registerUser(data));
+  };
   return (
     <Form error size="large" onSubmit={handleSubmit(handleRegister)}>
       <Segment>
@@ -24,7 +31,7 @@ const RegisterForm = () => {
           register={register({
             required: { message: "Required", value: true },
           })}
-        />{" "}
+        />
         <TextInput
           name="password"
           type="password"
@@ -33,8 +40,15 @@ const RegisterForm = () => {
             required: { message: "Required", value: true },
           })}
         />
+        {registerUserError && (
+          <Message
+            error
+            header="Register failed"
+            list={[registerUserError.message]}
+          />
+        )}
         <Button fluid size="large" color="teal">
-          Login
+          Register
         </Button>
       </Segment>
     </Form>

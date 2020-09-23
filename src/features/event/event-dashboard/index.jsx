@@ -5,15 +5,20 @@ import EventList from "../event-list/event-list";
 import { deleteEvent } from "../event.action";
 import LoadingComponent from "../../../app/layout/loading";
 import EventActivity from "../event-activity";
+import { useFirestoreConnect } from "react-redux-firebase";
 
 function EventDashboard() {
-  const events = useSelector((state) => state.events);
-  const { loading } = useSelector((state) => state.async);
+  useFirestoreConnect(["events"]);
+  const loading = useSelector(
+    (state) => state.firestore.status.requesting.events
+  );
+  const events = useSelector((state) => state.firestore?.ordered?.events || []);
   const dispatch = useDispatch();
 
   const handleDeleteEvent = (eventId) => {
     dispatch(deleteEvent(eventId));
   };
+
   return loading ? (
     <LoadingComponent />
   ) : (

@@ -1,19 +1,20 @@
 import { handleActions } from "redux-actions";
-import { logInUser, signOutUser } from "./auth.action";
+import { logInFailed, registerUserFailed, resetAuthState } from "./auth.action";
 
 const initialState = {
-  currentUser: {},
-  authenticated: false,
+  logInError: null,
+  registerUserError: null,
 };
 
 export const authReducer = handleActions(
   {
-    [logInUser]: (state, { payload }) => {
-      return { ...state, authenticated: true, currentUser: payload };
+    [logInFailed]: (state, { payload }) => {
+      return { ...state, logInError: payload };
     },
-    [signOutUser]: (state) => {
-      return initialState;
+    [registerUserFailed]: (state, { payload }) => {
+      return { ...state, registerUserError: payload };
     },
+    [resetAuthState]: (state) => initialState,
   },
   initialState
 );
