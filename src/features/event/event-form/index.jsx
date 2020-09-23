@@ -55,12 +55,19 @@ function EventForm({ match, history }) {
     register({ name: "venue" }, { required: true });
     register({ name: "lat" }, { required: true });
     register({ name: "lng" }, { required: true });
+
     setMounted(true);
   }, []);
 
   useEffect(() => {
     if (!isEmpty(event) && mounted) {
-      reset({ ...event });
+      reset({
+        ...event,
+        lat: event.venueLatLng.lat,
+        lng: event.venueLatLng.lng,
+      });
+      setValue("lat", event.venueLatLng.lat);
+      setValue("lng", event.venueLatLng.lng);
     }
   }, [event]);
 
@@ -79,6 +86,7 @@ function EventForm({ match, history }) {
       history.push("/events");
     }
   };
+
   return isEmpty(event) && !mounted ? (
     <LoadingComponent />
   ) : (
@@ -138,7 +146,7 @@ function EventForm({ match, history }) {
               value={watch("date")}
               name="date"
               placeholder="Date and Time of event"
-              error={errors?.category?.message || ""}
+              error={errors?.date?.message || ""}
               setValue={setValue}
               triggerValidation={trigger}
             />
@@ -150,6 +158,7 @@ function EventForm({ match, history }) {
               onClick={() => {
                 history.goBack();
               }}
+              type="button"
             >
               Cancel
             </Button>

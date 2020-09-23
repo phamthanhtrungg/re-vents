@@ -53,8 +53,8 @@ function EventDetailInfo({ event }) {
             <EventDetailMap
               zoom={8}
               center={{
-                lat: event.lat || 59.95,
-                lng: event.lng || 30.33,
+                lat: event.venueLatLng.lat || 59.95,
+                lng: event.venueLatLng.lng || 30.33,
               }}
             />
           )}

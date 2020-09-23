@@ -15,6 +15,7 @@ function PlaceInput({ error, setValue, placeholder, value }) {
     <Form.Field error={!isEmpty(error)}>
       <InstantSearch indexName="airports" searchClient={searchClient}>
         <Places
+          key={value}
           value={value}
           defaultRefinement={{
             lat: 37.7793,

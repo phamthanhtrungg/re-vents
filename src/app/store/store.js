@@ -6,8 +6,13 @@ import { modalReducer } from "../../features/modal/modal.reducer";
 import { authReducer } from "../../features/auth/auth.reducer";
 import { asyncReducer } from "../../features/async/async.reducer";
 import { reducer as toastrReducer } from "react-redux-toastr";
-
-const middleware = [thunk];
+import { getFirebase, firebaseReducer } from "react-redux-firebase";
+import {
+  reduxFirestore,
+  getFirestore,
+  firestoreReducer,
+} from "redux-firestore";
+import firebase from "../config/firebase";
 
 const rootReducer = combineReducers({
   events: eventReducer,
@@ -15,14 +20,18 @@ const rootReducer = combineReducers({
   auth: authReducer,
   async: asyncReducer,
   toastr: toastrReducer,
+  firebase: firebaseReducer,
+  firestore: firestoreReducer,
 });
 
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(
-    applyMiddleware(...middleware)
-    // other store enhancers if any
-  )
+const middlewares = [thunk.withExtraArgument({ getFirebase, getFirestore })];
+const middlewareEnhancer = applyMiddleware(...middlewares);
+const storeEnhancer = [middlewareEnhancer];
+const composedEnhander = composeWithDevTools(
+  ...storeEnhancer,
+  reduxFirestore(firebase)
 );
+
+const store = createStore(rootReducer, composedEnhander);
 
 export { store };

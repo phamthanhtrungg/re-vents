@@ -1,4 +1,5 @@
 import { handleActions } from "redux-actions";
+import { pick } from "lodash";
 import {
   createEventType,
   deleteEvent,
@@ -14,12 +15,41 @@ export const eventReducer = handleActions(
       return payload;
     },
     [createEventType]: (state, { payload }) => {
-      return [...state, payload];
+      return [
+        ...state,
+        {
+          ...pick(payload, [
+            "id",
+            "title",
+            "category",
+            "description",
+            "date",
+            "venue",
+          ]),
+          venueLatLng: {
+            lat: payload.lat,
+            lng: payload.lng,
+          },
+        },
+      ];
     },
     [updateEventType]: (state, { payload }) => {
       return state.map((event) => {
         if (event.id === payload.id) {
-          return Object.assign(event, payload);
+          return Object.assign(event, {
+            ...pick(payload, [
+              "id",
+              "title",
+              "category",
+              "description",
+              "date",
+              "venue",
+            ]),
+            venueLatLng: {
+              lat: payload.lat,
+              lng: payload.lng,
+            },
+          });
         }
         return event;
       });

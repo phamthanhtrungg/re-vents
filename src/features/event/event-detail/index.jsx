@@ -12,7 +12,6 @@ function EventDetail({ match }) {
   const eventId = match.params.id;
   const events = useSelector((state) => state.events);
   const event = events.filter((event) => event.id === eventId)[0];
-
   return !event ? (
     <LoadingComponent />
   ) : (

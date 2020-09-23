@@ -5,7 +5,7 @@ function EventActivity() {
   return (
     <div>
       <Header attached="top" content="Recent Activities" />
-      <Segment attached="">
+      <Segment attached>
         <p>Recent activities</p>
       </Segment>
     </div>

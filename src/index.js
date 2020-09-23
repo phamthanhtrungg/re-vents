@@ -8,6 +8,9 @@ import App from "./app/layout/app";
 import reportWebVitals from "./reportWebVitals";
 import { store } from "./app/store/store";
 import { loadEvents } from "./features/event/event.action";
+import { ReactReduxFirebaseProvider } from "react-redux-firebase";
+import { createFirestoreInstance } from "redux-firestore";
+import firebase from "./app/config/firebase";
 
 import ReduxToastr from "react-redux-toastr";
 import ScrollToTop from "./app/utils/scroll-to-top";
@@ -16,19 +19,34 @@ import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
 
 store.dispatch(loadEvents());
 
+const rrfConfig = {
+  userProfile: "users",
+  attachAuthIsReady: true,
+  useFirestoreForProfile: true,
+};
+
+const rrfProps = {
+  firebase,
+  config: rrfConfig,
+  dispatch: store.dispatch,
+  createFirestoreInstance,
+};
+
 ReactDOM.render(
   <Provider store={store}>
-    <HashRouter>
-      <ScrollToTop>
-        <ReduxToastr
-          timeOut={4000}
-          position="top-right"
-          transitionIn="fadeIn"
-          transitionOut="fadeOut"
-        />
-        <App />
-      </ScrollToTop>
-    </HashRouter>
+    <ReactReduxFirebaseProvider {...rrfProps}>
+      <HashRouter>
+        <ScrollToTop>
+          <ReduxToastr
+            timeOut={4000}
+            position="top-right"
+            transitionIn="fadeIn"
+            transitionOut="fadeOut"
+          />
+          <App />
+        </ScrollToTop>
+      </HashRouter>
+    </ReactReduxFirebaseProvider>
   </Provider>,
   document.getElementById("root")
 );
