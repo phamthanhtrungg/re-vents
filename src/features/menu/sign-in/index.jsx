@@ -6,7 +6,7 @@ import { Menu, Image, Dropdown } from "semantic-ui-react";
 import { resetAuthState } from "../../auth/auth.action";
 
 function SignInMenu() {
-  const { profile } = useSelector((state) => state.firebase);
+  const { profile, auth } = useSelector((state) => state.firebase);
   const dispatch = useDispatch();
   const firebase = useFirebase();
   const history = useHistory();
@@ -28,7 +28,12 @@ function SignInMenu() {
           />
           <Dropdown.Item text="My Events" icon="calendar" />
           <Dropdown.Item text="My Network" icon="users" />
-          <Dropdown.Item text="My Profile" icon="user" />
+          <Dropdown.Item
+            as={Link}
+            to={`/profile/${auth.uid}`}
+            text="My Profile"
+            icon="user"
+          />
           <Dropdown.Item
             as={Link}
             to="/settings"
