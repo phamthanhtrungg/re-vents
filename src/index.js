@@ -15,6 +15,7 @@ import ReduxToastr from "react-redux-toastr";
 import ScrollToTop from "./app/utils/scroll-to-top";
 import "semantic-ui-css/semantic.min.css";
 import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
+import "cropperjs/dist/cropper.css";
 
 const rrfConfig = {
   userProfile: "users",
