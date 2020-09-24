@@ -6,13 +6,14 @@ class Places extends Component {
   createRef = (c) => (this.element = c);
 
   componentDidMount() {
-    const { refine, defaultRefinement } = this.props;
+    const { refine, defaultRefinement, value } = this.props;
 
     const autocomplete = places({
       container: this.element,
       useDeviceLocation: true,
     });
-    autocomplete.setVal(this.props.value);
+    autocomplete.setVal(value);
+
     autocomplete.on("change", (event) => {
       this.props.handleChange && this.props.handleChange(event);
       refine(event.suggestion.latlng);

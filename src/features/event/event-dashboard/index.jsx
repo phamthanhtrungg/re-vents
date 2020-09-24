@@ -8,23 +8,36 @@ import EventActivity from "../event-activity";
 import { useFirestoreConnect } from "react-redux-firebase";
 
 function EventDashboard() {
-  useFirestoreConnect(["events"]);
-  const loading = useSelector(
-    (state) => state.firestore.status.requesting.events
-  );
-  const events = useSelector((state) => state.firestore?.ordered?.events || []);
+  useFirestoreConnect([
+    {
+      collection: "events",
+      storeAs: "events",
+    },
+  ]);
+
+  const events = useSelector((state) => state.firestore?.data?.events);
   const dispatch = useDispatch();
 
   const handleDeleteEvent = (eventId) => {
     dispatch(deleteEvent(eventId));
   };
 
-  return loading ? (
+  return !events ? (
     <LoadingComponent />
   ) : (
     <Grid>
       <Grid.Column width={10}>
-        <EventList events={events} handleDeleteEvent={handleDeleteEvent} />
+        <EventList
+          events={Object.keys(events).map((eventKey) => {
+            return (
+              events[eventKey] && {
+                ...events[eventKey],
+                id: eventKey,
+              }
+            );
+          })}
+          handleDeleteEvent={handleDeleteEvent}
+        />
       </Grid.Column>
       <Grid.Column width={6}>
         <EventActivity />

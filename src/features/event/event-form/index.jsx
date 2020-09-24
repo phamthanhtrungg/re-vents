@@ -2,9 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Segment, Grid, Header } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { isEmpty } from "lodash";
-import { v4 } from "uuid";
 import { createEvent, updateEvent } from "../event.action";
 import TextInput from "../../../app/common/form/text-input";
 import TextArea from "../../../app/common/form/text-area";
@@ -12,6 +11,7 @@ import SelectInput from "../../../app/common/form/select-input";
 import DateInputPicker from "../../../app/common/form/date-picker";
 import PlaceInput from "../../../app/common/form/place-input";
 import LoadingComponent from "../../../app/layout/loading";
+import { useFirestore } from "react-redux-firebase";
 
 const category = [
   { key: "drinks", text: "Drinks", value: "drinks" },
@@ -25,21 +25,10 @@ const category = [
 function EventForm({ match, history }) {
   const eventId = match.params.id;
   const [mounted, setMounted] = useState(false);
-
-  const events = useSelector((state) => state.events);
+  const [event, setEvent] = useState({});
   const dispatch = useDispatch();
-
-  const event = events.filter((event) => event.id === eventId)[0];
-
-  const {
-    register,
-    handleSubmit,
-    errors,
-    setValue,
-    trigger,
-    watch,
-    reset,
-  } = useForm({
+  const firestore = useFirestore();
+  const { register, handleSubmit, errors, setValue, trigger, watch } = useForm({
     defaultValues: { ...event },
   });
 
@@ -58,19 +47,26 @@ function EventForm({ match, history }) {
     );
     register({ name: "lat" }, { required: true });
     register({ name: "lng" }, { required: true });
-
+    async function findEvent() {
+      let event = await firestore.get(`events/${eventId}`);
+      if (event.exists) {
+        setEvent(event.data());
+      }
+    }
+    findEvent();
     setMounted(true);
   }, []);
 
   useEffect(() => {
     if (!isEmpty(event) && mounted) {
-      reset({
-        ...event,
-        lat: event.venueLatLng.lat,
-        lng: event.venueLatLng.lng,
-      });
       setValue("lat", event.venueLatLng.lat);
       setValue("lng", event.venueLatLng.lng);
+      setValue("title", event.title);
+      setValue("category", event.category);
+      setValue("description", event.description);
+      setValue("venue", event.venue);
+      setValue("date", event.date.toDate());
+      setValue("id", eventId);
     }
   }, [event]);
 
@@ -79,13 +75,7 @@ function EventForm({ match, history }) {
       dispatch(updateEvent(data));
       history.goBack();
     } else {
-      dispatch(
-        createEvent({
-          ...data,
-          id: v4(),
-          hostPhotoURL: process.env.PUBLIC_URL + "/assets/user.png",
-        })
-      );
+      dispatch(createEvent(data));
       history.push("/events");
     }
   };
@@ -116,7 +106,6 @@ function EventForm({ match, history }) {
               options={category}
               value={watch("category")}
               name="category"
-              type="text"
               placeholder="What's your event about?"
               error={errors?.category?.message || ""}
               setValue={setValue}

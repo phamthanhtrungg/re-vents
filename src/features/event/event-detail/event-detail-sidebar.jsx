@@ -12,14 +12,15 @@ function EventDetailSideBar({ attendees }) {
         inverted
         color="teal"
       >
-        {attendees && attendees.length}{" "}
-        {attendees && attendees.length === 1 ? "Person" : "People"} going
+        {attendees && Object.keys(attendees).length}{" "}
+        {attendees && Object.keys(attendees).length === 1 ? "Person" : "People"}{" "}
+        going
       </Segment>
       <Segment attached>
         <Item.Group divided>
           {attendees &&
-            attendees.map((attendee) => (
-              <Item key={attendee.id} style={{ position: "relative" }}>
+            Object.keys(attendees).map((attendeeKey) => (
+              <Item key={attendeeKey} style={{ position: "relative" }}>
                 <Label
                   style={{ position: "absolute" }}
                   color="orange"
@@ -27,9 +28,15 @@ function EventDetailSideBar({ attendees }) {
                 >
                   Host
                 </Label>
-                <Item.Image size="tiny" src={attendee.photoURL} alt="" />
+                <Item.Image
+                  size="tiny"
+                  src={attendees[attendeeKey].photoURL}
+                  alt=""
+                />
                 <Item.Content verticalAlign="middle">
-                  <Item.Header as="h3">{attendee.name}</Item.Header>
+                  <Item.Header as="h3">
+                    {attendees[attendeeKey].name}
+                  </Item.Header>
                 </Item.Content>
               </Item>
             ))}

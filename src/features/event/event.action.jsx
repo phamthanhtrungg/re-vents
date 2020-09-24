@@ -6,28 +6,57 @@ import {
   asyncActionFinish,
   asyncActionStart,
 } from "../async/async.action";
+import { createNewEvent } from "../../app/utils/helper";
 
 export const deleteEvent = createAction("DELETE_EVENT", (eventId) => eventId);
 export const fetchEvents = createAction("FETCH_EVENTS");
 export const createEventType = createAction("CREATE_EVENT");
 export const updateEventType = createAction("UPDATE_EVENT");
 
-export const createEvent = (newEvent) => {
-  return async (dispatch) => {
+export const createEvent = (event) => {
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+    const user = getFirebase().auth().currentUser;
+    const photoURL = getState().firebase.profile.photoURL;
+    let newEvent = createNewEvent(user, photoURL, event);
     try {
-      dispatch(createEventType(newEvent));
+      let createdEvent = await firestore.add(
+        { collection: "events" },
+        newEvent
+      );
+
+      await firestore.set(`event_attendees/${createdEvent.id}_${user.uid}`, {
+        eventId: createdEvent.id,
+        userUid: user.uid,
+        eventDate: event.date,
+        host: true,
+      });
+      dispatch(createEventType(event));
       toastr.success("Success", "Event has beed created");
     } catch (err) {
+      console.log(err);
       toastr.error("Oops", "Something went wrong");
     }
   };
 };
-export const updateEvent = (updatedEvent) => {
-  return async (dispatch) => {
+export const updateEvent = (event) => {
+  return async (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+
     try {
-      dispatch(updateEventType(updatedEvent));
+      await firestore.update(`events/${event.id}`, {
+        ...event,
+        venueLatLng: {
+          lat: event.lat,
+          lng: event.lng,
+        },
+      });
+
+      dispatch(createEventType(event));
       toastr.success("Success", "Event has beed updated");
     } catch (err) {
+      console.log("my event", event);
+      console.log(err);
       toastr.error("Oops", "Something went wrong");
     }
   };
