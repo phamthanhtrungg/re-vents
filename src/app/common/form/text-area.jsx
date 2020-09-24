@@ -7,14 +7,12 @@ const TextArea = ({
   width,
   register,
   placeholder = "",
-  type = "text",
   name,
   ...otherProps
 }) => {
   return (
     <Form.Field error={!isEmpty(error)} width={width}>
       <textarea
-        type={type}
         name={name}
         placeholder={placeholder}
         ref={register}

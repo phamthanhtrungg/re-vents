@@ -10,10 +10,13 @@ function SelectInput({
   triggerValidation,
   setValue,
   options,
+  multiple,
+  ...fieldProps
 }) {
   return (
-    <Form.Field error={!isEmpty(error)}>
+    <Form.Field error={!isEmpty(error)} {...fieldProps}>
       <Form.Select
+        multiple={multiple}
         value={value}
         name={name}
         placeholder={placeholder}

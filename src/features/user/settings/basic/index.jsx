@@ -12,12 +12,13 @@ import {
   Message,
 } from "semantic-ui-react";
 import moment from "moment";
+import { useFirebase } from "react-redux-firebase";
+import { toastr } from "react-redux-toastr";
+
 import DateInputPicker from "../../../../app/common/form/date-picker";
 import PlaceInput from "../../../../app/common/form/place-input";
 import RadioInput from "../../../../app/common/form/radio-input";
 import TextInput from "../../../../app/common/form/text-input";
-import { useFirebase } from "react-redux-firebase";
-import { toastr } from "react-redux-toastr";
 
 const Basics = (props) => {
   const [mounted, setMounted] = useState(false);
@@ -34,7 +35,7 @@ const Basics = (props) => {
     setError,
   } = useForm({
     mode: "all",
-    defaultValues: { ...user },
+    defaultValues: { ...user, dateOfBirth: user?.dateOfBirth?.toDate() },
   });
 
   useEffect(() => {
@@ -53,7 +54,7 @@ const Basics = (props) => {
       );
       setValue("gender", user.gender || "");
     }
-  }, [mounted, user]);
+  }, [user]);
 
   const firebase = useFirebase();
   const handleUpdateUserProfile = async (data) => {
@@ -117,13 +118,14 @@ const Basics = (props) => {
           setValue={setValue}
           value={getValues("city") || ""}
         />
-        {errors?.general?.message && <Message />}
+        {errors?.general?.message && (
+          <Message error list={[errors?.general?.message]} />
+        )}
         <Divider />
         <Button
           size="large"
           positive
           content="Update Profile"
-          disabled={!formState.isValid}
           loading={formState.isSubmitting}
         />
       </Form>
