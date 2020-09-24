@@ -21,11 +21,13 @@ function DateInputPicker({
         selected={value ? new Date(value) : null}
         onChange={async (date) => {
           setValue(name, date);
-          await triggerValidation(name);
+          triggerValidation(name);
         }}
         placeholderText={placeholder}
         dateFormat="dd/MM/yyyy HH:mm"
-        showTimeSelect
+        timeFormat="HH:mm"
+        showYearDropDown
+        dropdownMode="select"
         {...rest}
       />
       {!isEmpty(error) && (

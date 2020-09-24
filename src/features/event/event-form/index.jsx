@@ -153,6 +153,7 @@ function EventForm({ match, history }) {
               error={errors?.date?.message || ""}
               setValue={setValue}
               triggerValidation={trigger}
+              showTimeSelect={true}
             />
             <Button positive type="submit">
               Submit
