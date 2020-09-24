@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/re-vents/static/css/main.0593a999.chunk.css",
-    "main.js": "/re-vents/static/js/main.fd9623f5.chunk.js",
-    "main.js.map": "/re-vents/static/js/main.fd9623f5.chunk.js.map",
-    "runtime-main.js": "/re-vents/static/js/runtime-main.2ee1dafc.js",
-    "runtime-main.js.map": "/re-vents/static/js/runtime-main.2ee1dafc.js.map",
-    "static/css/2.f085350c.chunk.css": "/re-vents/static/css/2.f085350c.chunk.css",
-    "static/js/2.bcc96dc7.chunk.js": "/re-vents/static/js/2.bcc96dc7.chunk.js",
-    "static/js/2.bcc96dc7.chunk.js.map": "/re-vents/static/js/2.bcc96dc7.chunk.js.map",
-    "static/js/3.f9983bbe.chunk.js": "/re-vents/static/js/3.f9983bbe.chunk.js",
-    "static/js/3.f9983bbe.chunk.js.map": "/re-vents/static/js/3.f9983bbe.chunk.js.map",
+    "main.css": "/re-vents/static/css/main.602a98fa.chunk.css",
+    "main.js": "/re-vents/static/js/main.f9de8b8c.chunk.js",
+    "main.js.map": "/re-vents/static/js/main.f9de8b8c.chunk.js.map",
+    "runtime-main.js": "/re-vents/static/js/runtime-main.6ebc4766.js",
+    "runtime-main.js.map": "/re-vents/static/js/runtime-main.6ebc4766.js.map",
+    "static/css/2.39ec4b7b.chunk.css": "/re-vents/static/css/2.39ec4b7b.chunk.css",
+    "static/js/2.6b40277c.chunk.js": "/re-vents/static/js/2.6b40277c.chunk.js",
+    "static/js/2.6b40277c.chunk.js.map": "/re-vents/static/js/2.6b40277c.chunk.js.map",
+    "static/js/3.68d565cc.chunk.js": "/re-vents/static/js/3.68d565cc.chunk.js",
+    "static/js/3.68d565cc.chunk.js.map": "/re-vents/static/js/3.68d565cc.chunk.js.map",
     "index.html": "/re-vents/index.html",
-    "static/css/2.f085350c.chunk.css.map": "/re-vents/static/css/2.f085350c.chunk.css.map",
-    "static/css/main.0593a999.chunk.css.map": "/re-vents/static/css/main.0593a999.chunk.css.map",
-    "static/js/2.bcc96dc7.chunk.js.LICENSE.txt": "/re-vents/static/js/2.bcc96dc7.chunk.js.LICENSE.txt",
+    "static/css/2.39ec4b7b.chunk.css.map": "/re-vents/static/css/2.39ec4b7b.chunk.css.map",
+    "static/css/main.602a98fa.chunk.css.map": "/re-vents/static/css/main.602a98fa.chunk.css.map",
+    "static/js/2.6b40277c.chunk.js.LICENSE.txt": "/re-vents/static/js/2.6b40277c.chunk.js.LICENSE.txt",
     "static/media/semantic.min.css": "/re-vents/static/media/outline-icons.ddae9b1b.woff"
   },
   "entrypoints": [
-    "static/js/runtime-main.2ee1dafc.js",
-    "static/css/2.f085350c.chunk.css",
-    "static/js/2.bcc96dc7.chunk.js",
-    "static/css/main.0593a999.chunk.css",
-    "static/js/main.fd9623f5.chunk.js"
+    "static/js/runtime-main.6ebc4766.js",
+    "static/css/2.39ec4b7b.chunk.css",
+    "static/js/2.6b40277c.chunk.js",
+    "static/css/main.602a98fa.chunk.css",
+    "static/js/main.f9de8b8c.chunk.js"
   ]
 }
