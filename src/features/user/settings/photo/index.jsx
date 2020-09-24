@@ -92,6 +92,26 @@ function PhotosPage() {
     });
   };
 
+  const handleDeleteImage = async (photo) => {
+    const user = firebase.auth().currentUser;
+    try {
+      await firebase.deleteFile(`${user.uid}/user_images/${photo.name}`);
+      await firestore.delete({
+        collection: "users",
+        doc: user.uid,
+        subcollections: [
+          {
+            collection: "photos",
+            doc: photo.id,
+          },
+        ],
+      });
+      toastr.success("Success", "Photo deleted");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <Segment>
       <Header dividing size="large" content="Your Photos" />
@@ -108,40 +128,44 @@ function PhotosPage() {
           <Grid.Column width={1} />
           <Grid.Column width={4}>
             <Header sub color="teal" content="Step 2 - Resize image" />
-            <Cropper
-              src={files[0] && URL.createObjectURL(files[0])}
-              style={{ height: 200, width: "100%" }}
-              initialAspectRatio={1}
-              preview=".img-preview"
-              viewMode={1}
-              guides={true}
-              minCropBoxHeight={10}
-              minCropBoxWidth={10}
-              background={false}
-              responsive={true}
-              autoCropArea={1}
-              checkOrientation={false}
-              onInitialized={(cropper) => (myCropper.current = cropper)}
-            />
+            {files[0] && (
+              <Cropper
+                src={files[0] && URL.createObjectURL(files[0])}
+                style={{ height: 200, width: "100%" }}
+                initialAspectRatio={1}
+                preview=".img-preview"
+                viewMode={1}
+                guides={true}
+                minCropBoxHeight={10}
+                minCropBoxWidth={10}
+                background={false}
+                responsive={true}
+                autoCropArea={1}
+                checkOrientation={false}
+                onInitialized={(cropper) => (myCropper.current = cropper)}
+              />
+            )}
           </Grid.Column>
           <Grid.Column width={1} />
           <Grid.Column width={4}>
             <Header sub color="teal" content="Step 3 - Preview and Upload" />
-            <div
-              style={{
-                width: "200px",
-                height: "200px ",
-              }}
-            >
+            {files[0] && (
               <div
-                className="img-preview"
                 style={{
                   width: "200px",
                   height: "200px ",
-                  overflow: "hidden",
                 }}
-              />
-            </div>
+              >
+                <div
+                  className="img-preview"
+                  style={{
+                    width: "200px",
+                    height: "200px ",
+                    overflow: "hidden",
+                  }}
+                />
+              </div>
+            )}
 
             {files[0] && (
               <Button.Group style={{ width: "100%" }}>
@@ -194,7 +218,14 @@ function PhotosPage() {
                   <Button basic color="green">
                     Main
                   </Button>
-                  <Button basic icon="trash" color="red" />
+                  <Button
+                    basic
+                    icon="trash"
+                    color="red"
+                    onClick={() => {
+                      handleDeleteImage(photo);
+                    }}
+                  />
                 </div>
               </Card>
             );
