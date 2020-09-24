@@ -108,6 +108,20 @@ function PhotosPage() {
       });
       toastr.success("Success", "Photo deleted");
     } catch (err) {
+      toastr.error("Failed", "Something failed");
+      console.log(err);
+    }
+  };
+
+  const handleSetMainImage = async (photo) => {
+    try {
+      await firebase.updateProfile({
+        photoURL: photo.url,
+      });
+      toastr.success("Success", "Main photo updated");
+    } catch (err) {
+      toastr.error("Failed", "Something failed");
+
       console.log(err);
     }
   };
@@ -215,7 +229,13 @@ function PhotosPage() {
                   style={{ minHeight: 150, flex: 1 }}
                 />
                 <div className="ui two buttons">
-                  <Button basic color="green">
+                  <Button
+                    basic
+                    color="green"
+                    onClick={() => {
+                      handleSetMainImage(photo);
+                    }}
+                  >
                     Main
                   </Button>
                   <Button
