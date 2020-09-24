@@ -1,18 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Grid } from "semantic-ui-react";
+import { useSelector } from "react-redux";
 
 import EventDetailChat from "./event-detail-chat";
 import EventDetailHeader from "./event-detail-header";
 import EventDetailInfo from "./event-detail-info";
 import EventDetailSideBar from "./event-detail-sidebar";
 import LoadingComponent from "../../../app/layout/loading";
-import { useFirestore } from "react-redux-firebase";
+import { useFirestore, useFirestoreConnect } from "react-redux-firebase";
 import { toastr } from "react-redux-toastr";
 
 function EventDetail({ match, history }) {
   const eventId = match.params.id;
-  const [localEvent, setLocalEvent] = useState(null);
+  useFirestoreConnect([
+    {
+      collection: "events",
+      doc: eventId,
+      storeAs: "eventDetail",
+    },
+  ]);
+  const event = useSelector((state) => state.firestore.data.eventDetail);
   const firestore = useFirestore();
 
   useEffect(() => {
@@ -21,24 +29,22 @@ function EventDetail({ match, history }) {
       if (!event.exists) {
         history.push("/events");
         toastr.error("Error", "Event not found");
-      } else {
-        setLocalEvent({ ...event.data(), id: eventId });
       }
     }
     findEvent();
   }, []);
 
-  return !localEvent ? (
+  return !event ? (
     <LoadingComponent />
   ) : (
     <Grid>
       <Grid.Column width={10}>
-        <EventDetailHeader event={localEvent} />
-        <EventDetailInfo event={localEvent} />
+        <EventDetailHeader event={{ ...event, id: eventId }} />
+        <EventDetailInfo event={{ ...event, id: eventId }} />
         <EventDetailChat />
       </Grid.Column>
       <Grid.Column width={6}>
-        <EventDetailSideBar attendees={localEvent.attendees} />
+        <EventDetailSideBar attendees={event.attendees} />
       </Grid.Column>
     </Grid>
   );

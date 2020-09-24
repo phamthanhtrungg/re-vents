@@ -4,7 +4,7 @@ import { Button, Form, Segment, Grid, Header } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { isEmpty } from "lodash";
-import { createEvent, updateEvent } from "../event.action";
+import { cancelToggle, createEvent, updateEvent } from "../event.action";
 import TextInput from "../../../app/common/form/text-input";
 import TextArea from "../../../app/common/form/text-area";
 import SelectInput from "../../../app/common/form/select-input";
@@ -155,6 +155,20 @@ function EventForm({ match, history }) {
               type="button"
             >
               Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                dispatch(cancelToggle(!event.cancelled, eventId));
+                setEvent((state) => ({
+                  ...state,
+                  cancelled: !state.cancelled,
+                }));
+              }}
+              floated="right"
+              type="button"
+              color={event.cancelled ? "green" : "red"}
+            >
+              {event.cancelled ? "Reactivate event" : "Cancel event"}
             </Button>
           </Form>
         </Segment>

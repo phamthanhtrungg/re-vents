@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Icon, Item, List, Segment } from "semantic-ui-react";
+import { Button, Icon, Item, List, Segment, Label } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import EventListAttendee from "./event-list-attendee";
 import moment from "moment";
@@ -13,6 +13,7 @@ function EventListItem({ event, handleDeleteEvent }) {
     hostedBy,
     hostPhotoURL,
     attendees,
+    cancelled,
   } = event;
   return (
     <Segment.Group>
@@ -25,6 +26,11 @@ function EventListItem({ event, handleDeleteEvent }) {
               <Item.Description>
                 Hosted by <a href="/">{hostedBy}</a>
               </Item.Description>
+              {cancelled && (
+                <Label ribbon="right" color="red" style={{ top: "-40px" }}>
+                  This event has been cancelled
+                </Label>
+              )}
             </Item.Content>
           </Item>
         </Item.Group>
