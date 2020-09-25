@@ -13,6 +13,7 @@ import {
   Menu,
   Segment,
 } from "semantic-ui-react";
+import LazyLoad from "react-lazyload";
 import LoadingComponent from "../../../app/layout/loading";
 import { useFirestoreConnect } from "react-redux-firebase";
 import { Link } from "react-router-dom";
@@ -84,7 +85,7 @@ function UserDetailedPage({ match }) {
           </Item.Group>
         </Segment>
       </Grid.Column>
-      <Grid.Column width={12}>
+      <Grid.Column width={uid === auth.uid ? 12 : 16}>
         <Segment>
           <Grid columns={2}>
             <Grid.Column width={10}>
@@ -123,33 +124,47 @@ function UserDetailedPage({ match }) {
         </Segment>
       </Grid.Column>
 
-      <Grid.Column width={4}>
-        <Segment>
-          <Button
-            as={Link}
-            to="/settings"
-            color="teal"
-            fluid
-            basic
-            content="Edit Profile"
-          />
-        </Segment>
-      </Grid.Column>
-
+      {uid === auth.uid && (
+        <Grid.Column width={4}>
+          <Segment>
+            <Button
+              as={Link}
+              to="/settings"
+              color="teal"
+              fluid
+              basic
+              content="Edit Profile"
+            />
+          </Segment>
+        </Grid.Column>
+      )}
       {photos && photos.length && (
-        <Grid.Column width={12}>
+        <Grid.Column width={uid === auth.uid ? 12 : 16}>
           <Segment attached>
             <Header icon="image" content="Photos" />
             <Image.Group size="small">
               {photos.map((photo) => (
-                <Image key={photo.id} src={photo.url} alt="" />
+                <LazyLoad
+                  style={{ width: "auto" }}
+                  key={photo.id}
+                  height={400}
+                  placeholder={
+                    <Image
+                      rounded
+                      src={process.env.PUBLIC_URL + "/assets/user.png"}
+                      alt=""
+                    />
+                  }
+                >
+                  <Image src={photo.url} alt="" />
+                </LazyLoad>
               ))}
             </Image.Group>
           </Segment>
         </Grid.Column>
       )}
 
-      <Grid.Column width={12}>
+      <Grid.Column width={uid === auth.uid ? 12 : 16}>
         <Segment attached>
           <Header icon="calendar" content="Events" />
           <Menu secondary pointing>

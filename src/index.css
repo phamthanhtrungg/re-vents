@@ -79,3 +79,6 @@ code {
   height: 200px;
   width: 200px;
 }
+.lazyload-wrapper {
+  display: inline-block;
+}
