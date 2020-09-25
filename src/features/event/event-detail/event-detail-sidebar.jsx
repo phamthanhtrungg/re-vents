@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { Segment, Label, Item } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 function EventDetailSideBar({ attendees }) {
   return (
@@ -20,7 +21,12 @@ function EventDetailSideBar({ attendees }) {
         <Item.Group divided>
           {attendees &&
             Object.keys(attendees).map((attendeeKey) => (
-              <Item key={attendeeKey} style={{ position: "relative" }}>
+              <Item
+                as={Link}
+                to={`/profile/${attendeeKey}`}
+                key={attendeeKey}
+                style={{ position: "relative" }}
+              >
                 {attendees[attendeeKey].host && (
                   <Label
                     style={{ position: "absolute" }}

@@ -10,7 +10,7 @@ function EventList({ events, handleDeleteEvent }) {
           return (
             event && (
               <EventListItem
-                key={event.id + i}
+                key={event.id}
                 event={event}
                 handleDeleteEvent={handleDeleteEvent}
               />

@@ -17,19 +17,46 @@ import LoadingComponent from "../../../app/layout/loading";
 import { useFirestoreConnect } from "react-redux-firebase";
 import { Link } from "react-router-dom";
 
-function UserDetailedPage() {
-  const { profile, auth } = useSelector((state) => state.firebase);
-  useFirestoreConnect([
-    {
-      collection: "users",
-      doc: auth.uid,
-      subcollections: [{ collection: "photos" }],
-      storeAs: "photos",
-    },
-  ]);
-  const photos = useSelector((state) => state.firestore.ordered.photos);
+function UserDetailedPage({ match }) {
+  const uid = match.params.id;
+  const { auth } = useSelector((state) => state.firebase);
 
-  return profile.isEmpty && !profile.isLoaded ? (
+  useFirestoreConnect(() => {
+    if (uid && uid !== auth.uid) {
+      return [
+        {
+          collection: "users",
+          doc: uid,
+          storeAs: "profiles",
+        },
+        {
+          collection: "users",
+          doc: uid,
+          subcollections: [{ collection: "photos" }],
+          storeAs: "photos",
+        },
+      ];
+    }
+    return [
+      {
+        collection: "users",
+        doc: auth.uid,
+        storeAs: "profiles",
+      },
+      {
+        collection: "users",
+        doc: auth.uid,
+        subcollections: [{ collection: "photos" }],
+        storeAs: "photos",
+      },
+    ];
+  });
+  const photos = useSelector((state) => state.firestore.ordered.photos);
+  const profile = useSelector(
+    (state) =>
+      state.firestore.ordered.profiles && state.firestore.ordered.profiles[0]
+  );
+  return !profile ? (
     <LoadingComponent />
   ) : (
     <Grid>

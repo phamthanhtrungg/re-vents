@@ -22,9 +22,12 @@ function EventListItem({ event, handleDeleteEvent }) {
           <Item>
             <Item.Image size="tiny" circular src={hostPhotoURL} alt="" />
             <Item.Content>
-              <Item.Header as="a">{title}</Item.Header>
+              <Item.Header>{title}</Item.Header>
               <Item.Description>
-                Hosted by <a href="/">{hostedBy}</a>
+                Hosted by{" "}
+                <Link to={`/profile/${event.hostUid}`} href="/">
+                  {hostedBy}
+                </Link>
               </Item.Description>
               {cancelled && (
                 <Label ribbon="right" color="red" style={{ top: "-40px" }}>
@@ -44,8 +47,12 @@ function EventListItem({ event, handleDeleteEvent }) {
       <Segment secondary>
         <List horizontal>
           {attendees &&
-            Object.values(attendees).map((attendee, id) => (
-              <EventListAttendee key={attendee.name + id} {...attendee} />
+            Object.keys(attendees).map((attendeeKey) => (
+              <EventListAttendee
+                key={attendeeKey}
+                {...attendees[attendeeKey]}
+                attendeeId={attendeeKey}
+              />
             ))}
         </List>
       </Segment>

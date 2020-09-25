@@ -29,9 +29,15 @@ function EventDetailHeader({ event, isHost, isGoing }) {
                   content={event.title}
                   style={{ color: "white" }}
                 />
-                <p>{moment(event.date).format("DD/MM/yyyy HH:mm")}</p>
+                <p>{moment(event.date.toDate()).format("DD/MM/yyyy HH:mm")}</p>
                 <p>
-                  Hosted by <strong>{event.hostedBy}</strong>
+                  Hosted by{" "}
+                  <Link
+                    to={`/profile/${event.hostUid}`}
+                    style={{ color: "white", fontWeight: "bold" }}
+                  >
+                    {event.hostedBy}
+                  </Link>
                 </p>
               </Item.Content>
             </Item>
@@ -64,12 +70,7 @@ function EventDetailHeader({ event, isHost, isGoing }) {
         )}
 
         {isHost && (
-          <Button
-            color="orange"
-            floated="right"
-            as={Link}
-            to={`/manage/${event.id}`}
-          >
+          <Button color="orange" as={Link} to={`/manage/${event.id}`}>
             Manage Event
           </Button>
         )}

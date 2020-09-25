@@ -25,7 +25,7 @@ export const createEvent = (event) => {
         newEvent
       );
 
-      await firestore.set(`event_attendees/${createdEvent.id}_${user.uid}`, {
+      await firestore.set(`event_attendee/${createdEvent.id}_${user.uid}`, {
         eventId: createdEvent.id,
         userUid: user.uid,
         eventDate: event.date,
