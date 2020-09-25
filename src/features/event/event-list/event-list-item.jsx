@@ -3,6 +3,7 @@ import { Button, Icon, Item, List, Segment, Label } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import EventListAttendee from "./event-list-attendee";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 function EventListItem({ event, handleDeleteEvent }) {
   const {
@@ -15,6 +16,7 @@ function EventListItem({ event, handleDeleteEvent }) {
     attendees,
     cancelled,
   } = event;
+  const auth = useSelector((state) => state.firebase.auth);
   return (
     <Segment.Group>
       <Segment>
@@ -58,13 +60,15 @@ function EventListItem({ event, handleDeleteEvent }) {
       </Segment>
       <Segment clearing>
         <span>{description}</span>
-        <Button
-          color="red"
-          floated="right"
-          onClick={() => handleDeleteEvent(event.id)}
-        >
-          Delete
-        </Button>
+        {event.hostUid === auth.uid && (
+          <Button
+            color="red"
+            floated="right"
+            onClick={() => handleDeleteEvent(event.id)}
+          >
+            Delete
+          </Button>
+        )}
         <Button
           as={Link}
           to={`/events/${event.id}`}

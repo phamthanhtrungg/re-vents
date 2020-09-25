@@ -15,24 +15,27 @@ function EventDashboard() {
     },
   ]);
 
-  const events = useSelector((state) => state.firestore?.ordered?.events);
+  const events = useSelector((state) => state.firestore.ordered?.events);
+  const eventKeys = useSelector((state) =>
+    Object.keys(state.firestore.data?.events || {})
+  );
   const dispatch = useDispatch();
 
   const handleDeleteEvent = (eventId) => {
     dispatch(deleteEvent(eventId));
   };
 
-  return !events ? (
+  return !events || !eventKeys ? (
     <LoadingComponent />
   ) : (
     <Grid>
       <Grid.Column width={10}>
         <EventList
-          events={Object.keys(events).map((eventKey) => {
+          events={Object.values(events).map((event, i) => {
             return (
-              events[eventKey] && {
-                ...events[eventKey],
-                id: eventKey,
+              event && {
+                ...event,
+                id: eventKeys[i],
               }
             );
           })}

@@ -7,11 +7,13 @@ function EventList({ events, handleDeleteEvent }) {
       <h1>Event List</h1>
       {events.map((event, i) => {
         return (
-          <EventListItem
-            key={event.id}
-            event={event}
-            handleDeleteEvent={handleDeleteEvent}
-          />
+          event && (
+            <EventListItem
+              key={event.id}
+              event={event}
+              handleDeleteEvent={handleDeleteEvent}
+            />
+          )
         );
       })}
     </div>

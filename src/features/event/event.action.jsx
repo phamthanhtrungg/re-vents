@@ -8,10 +8,25 @@ import {
 } from "../async/async.action";
 import { createNewEvent } from "../../app/utils/helper";
 
-export const deleteEvent = createAction("DELETE_EVENT", (eventId) => eventId);
 export const fetchEvents = createAction("FETCH_EVENTS");
 export const createEventType = createAction("CREATE_EVENT");
 export const updateEventType = createAction("UPDATE_EVENT");
+
+export const deleteEvent = (eventId) => {
+  return async (_dispatch, _getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+    const user = getFirebase().auth().currentUser;
+    try {
+      await firestore.delete(`event_attendee/${eventId}_${user.uid}`);
+      await firestore.delete(`events/${eventId}`);
+
+      toastr.success("Success", "Event has beed deleted");
+    } catch (err) {
+      console.log(err);
+      toastr.error("Oops", "Something went wrong");
+    }
+  };
+};
 
 export const createEvent = (event) => {
   return async (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -40,7 +55,7 @@ export const createEvent = (event) => {
   };
 };
 export const updateEvent = (event) => {
-  return async (dispatch, getState, { getFirestore }) => {
+  return async (dispatch, _getState, { getFirestore }) => {
     const firestore = getFirestore();
 
     try {
@@ -76,7 +91,7 @@ export const loadEvents = () => {
 };
 
 export const cancelToggle = (cancelled, eventId) => {
-  return async (dispatch, getState, { getFirestore }) => {
+  return async (_dispatch, _getState, { getFirestore }) => {
     const firestore = getFirestore();
     try {
       await firestore.update(`events/${eventId}`, {

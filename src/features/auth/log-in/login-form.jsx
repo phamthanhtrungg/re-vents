@@ -32,7 +32,7 @@ const LoginForm = () => {
         <TextInput
           name="password"
           type="password"
-          placeholder="password"
+          placeholder="Password"
           autoComplete="current-password"
           register={register({
             required: { message: "Required", value: true },
