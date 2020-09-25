@@ -21,6 +21,7 @@ function EventDetail({ match, history }) {
     },
   ]);
   const event = useSelector((state) => state.firestore.data.eventDetail);
+  const auth = useSelector((state) => state.firebase.auth);
   const firestore = useFirestore();
 
   useEffect(() => {
@@ -33,13 +34,20 @@ function EventDetail({ match, history }) {
     }
     findEvent();
   }, []);
+  const attendees = event?.attendees || [];
+  const isHost = event?.hostUid === auth.uid;
+  const isGoing = Object.keys(attendees).some((a) => a === auth.uid);
 
   return !event ? (
     <LoadingComponent />
   ) : (
     <Grid>
       <Grid.Column width={10}>
-        <EventDetailHeader event={{ ...event, id: eventId }} />
+        <EventDetailHeader
+          event={{ ...event, id: eventId }}
+          isHost={isHost}
+          isGoing={isGoing}
+        />
         <EventDetailInfo event={{ ...event, id: eventId }} />
         <EventDetailChat />
       </Grid.Column>

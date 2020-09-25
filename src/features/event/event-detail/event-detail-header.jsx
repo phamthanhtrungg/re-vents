@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Segment, Image, Item, Button, Header } from "semantic-ui-react";
 import moment from "moment";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { cancelGoingToEvent, goingToEvent } from "../../auth/auth.action";
 
 const eventImageTextStyle = {
   position: "absolute",
@@ -12,12 +13,8 @@ const eventImageTextStyle = {
   color: "white",
 };
 
-function EventDetailHeader({ event }) {
-  const attendees = event.attendees;
-  const { auth } = useSelector((state) => state.firebase);
-  const isHost = event.hostUid === auth.uid;
-  const isGoing = Object.keys(attendees).some((a) => a === auth.uid);
-  console.log(Object.keys(attendees)[0] === auth.uid);
+function EventDetailHeader({ event, isHost, isGoing }) {
+  const dispatch = useDispatch();
   return (
     <Segment.Group>
       <Segment basic attached="top" style={{ padding: "0" }}>
@@ -46,9 +43,22 @@ function EventDetailHeader({ event }) {
         {!isHost && (
           <>
             {isGoing ? (
-              <Button>Cancel My Place</Button>
+              <Button
+                onClick={() => {
+                  dispatch(cancelGoingToEvent(event));
+                }}
+              >
+                Cancel My Place
+              </Button>
             ) : (
-              <Button color="teal">JOIN THIS EVENT</Button>
+              <Button
+                color="teal"
+                onClick={() => {
+                  dispatch(goingToEvent(event));
+                }}
+              >
+                JOIN THIS EVENT
+              </Button>
             )}
           </>
         )}

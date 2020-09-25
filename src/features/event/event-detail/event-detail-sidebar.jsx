@@ -21,13 +21,15 @@ function EventDetailSideBar({ attendees }) {
           {attendees &&
             Object.keys(attendees).map((attendeeKey) => (
               <Item key={attendeeKey} style={{ position: "relative" }}>
-                <Label
-                  style={{ position: "absolute" }}
-                  color="orange"
-                  ribbon="right"
-                >
-                  Host
-                </Label>
+                {attendees[attendeeKey].host && (
+                  <Label
+                    style={{ position: "absolute" }}
+                    color="orange"
+                    ribbon="right"
+                  >
+                    Host
+                  </Label>
+                )}
                 <Item.Image
                   size="tiny"
                   src={attendees[attendeeKey].photoURL}
@@ -35,7 +37,7 @@ function EventDetailSideBar({ attendees }) {
                 />
                 <Item.Content verticalAlign="middle">
                   <Item.Header as="h3">
-                    {attendees[attendeeKey].name}
+                    {attendees[attendeeKey].displayName}
                   </Item.Header>
                 </Item.Content>
               </Item>
