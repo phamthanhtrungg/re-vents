@@ -74,11 +74,11 @@ function UserDetailedPage({ match }) {
                 <Header as="h3">
                   {profile.dateOfBirth
                     ? moment().diff(
-                        moment(profile.dateOfBirth?.toDate()),
+                        moment(profile.dateOfBirth.toDate()),
                         "years"
                       )
-                    : "Unknown age"}
-                  , Lives in {profile.origin}
+                    : "Unknown age"}{" "}
+                  year old , Lives in {profile.origin}
                 </Header>
               </Item.Content>
             </Item>

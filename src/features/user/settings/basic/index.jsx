@@ -40,14 +40,14 @@ const Basics = (props) => {
 
   useEffect(() => {
     register({ name: "dateOfBirth" });
-    register({ name: "city" });
+    register({ name: "origin" });
     setMounted(true);
   }, []);
 
   useEffect(() => {
     if (!isEmpty(user) && mounted) {
       setValue("displayName", user.displayName);
-      setValue("city", user?.city || "");
+      setValue("city", user?.origin || "");
       setValue(
         "dateOfBirth",
         user?.dateOfBirth ? user.dateOfBirth.toDate() : ""
@@ -110,13 +110,13 @@ const Basics = (props) => {
           showMonthDropdown={true}
           showYearDropdown={true}
           dateFormat="yyyy-MM-dd"
-          maxDate={moment().subtract(18, "years")}
+          maxDate={moment().subtract(18, "years").toDate()}
         />
         <PlaceInput
-          name="city"
+          name="origin"
           placeholder="Home Town"
           setValue={setValue}
-          value={getValues("city") || ""}
+          value={getValues("origin") || ""}
         />
         {errors?.general?.message && (
           <Message error list={[errors?.general?.message]} />
