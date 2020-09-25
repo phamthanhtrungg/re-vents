@@ -15,7 +15,7 @@ function EventDashboard() {
     },
   ]);
 
-  const events = useSelector((state) => state.firestore?.data?.events);
+  const events = useSelector((state) => state.firestore?.ordered?.events);
   const dispatch = useDispatch();
 
   const handleDeleteEvent = (eventId) => {

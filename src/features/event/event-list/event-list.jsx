@@ -5,18 +5,15 @@ function EventList({ events, handleDeleteEvent }) {
   return (
     <div>
       <h1>Event List</h1>
-      {events.length &&
-        events.map((event, i) => {
-          return (
-            event && (
-              <EventListItem
-                key={event.id}
-                event={event}
-                handleDeleteEvent={handleDeleteEvent}
-              />
-            )
-          );
-        })}
+      {events.map((event, i) => {
+        return (
+          <EventListItem
+            key={event.id}
+            event={event}
+            handleDeleteEvent={handleDeleteEvent}
+          />
+        );
+      })}
     </div>
   );
 }
