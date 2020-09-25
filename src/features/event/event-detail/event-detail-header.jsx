@@ -18,7 +18,11 @@ function EventDetailHeader({ event, isHost, isGoing }) {
   return (
     <Segment.Group>
       <Segment basic attached="top" style={{ padding: "0" }}>
-        <Image src={process.env.PUBLIC_URL + "/assets/pho.jpg"} fluid alt="" />
+        <Image
+          src={process.env.PUBLIC_URL + `/assets/${event.category}.jpeg`}
+          fluid
+          alt=""
+        />
 
         <Segment basic style={eventImageTextStyle}>
           <Item.Group>

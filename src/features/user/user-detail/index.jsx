@@ -3,20 +3,19 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import {
   Button,
-  Card,
   Grid,
   Header,
   Icon,
   Image,
   Item,
   List,
-  Menu,
   Segment,
 } from "semantic-ui-react";
 import LazyLoad from "react-lazyload";
 import LoadingComponent from "../../../app/layout/loading";
 import { useFirestoreConnect } from "react-redux-firebase";
 import { Link } from "react-router-dom";
+import UserEvents from "./user-events";
 
 function UserDetailedPage({ match }) {
   const uid = match.params.id;
@@ -84,8 +83,8 @@ function UserDetailedPage({ match }) {
                         moment(profile.dateOfBirth.toDate()),
                         "years"
                       )
-                    : "Unknown age"}{" "}
-                  year old , Lives in {profile.origin}
+                    : "Unknown"}{" "}
+                  year old , Lives in {profile.origin || "Unknown"}
                 </Header>
               </Item.Content>
             </Item>
@@ -145,7 +144,7 @@ function UserDetailedPage({ match }) {
           </Segment>
         </Grid.Column>
       )}
-      {photos && photos.length && (
+      {photos && photos.length > 0 && (
         <Grid.Column width={uid === auth.uid ? 12 : 16}>
           <Segment attached>
             <Header icon="image" content="Photos" />
@@ -170,40 +169,7 @@ function UserDetailedPage({ match }) {
           </Segment>
         </Grid.Column>
       )}
-
-      <Grid.Column width={uid === auth.uid ? 12 : 16}>
-        <Segment attached>
-          <Header icon="calendar" content="Events" />
-          <Menu secondary pointing>
-            <Menu.Item name="All Events" active />
-            <Menu.Item name="Past Events" />
-            <Menu.Item name="Future Events" />
-            <Menu.Item name="Events Hosted" />
-          </Menu>
-
-          <Card.Group itemsPerRow={5}>
-            <Card>
-              <Image src={"/assets/categoryImages/drinks.jpg"} />
-              <Card.Content>
-                <Card.Header textAlign="center">Event Title</Card.Header>
-                <Card.Meta textAlign="center">
-                  28th March 2018 at 10:00 PM
-                </Card.Meta>
-              </Card.Content>
-            </Card>
-
-            <Card>
-              <Image src={"/assets/categoryImages/drinks.jpg"} />
-              <Card.Content>
-                <Card.Header textAlign="center">Event Title</Card.Header>
-                <Card.Meta textAlign="center">
-                  28th March 2018 at 10:00 PM
-                </Card.Meta>
-              </Card.Content>
-            </Card>
-          </Card.Group>
-        </Segment>
-      </Grid.Column>
+      <UserEvents uid={uid} auth={auth} />
     </Grid>
   );
 }

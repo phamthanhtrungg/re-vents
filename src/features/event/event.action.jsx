@@ -42,7 +42,7 @@ export const createEvent = (event) => {
       await firestore.set(`event_attendee/${createdEvent.id}_${user.uid}`, {
         eventId: createdEvent.id,
         userUid: user.uid,
-        eventDate: event.date,
+        eventDate: new Date(event.date),
         host: true,
       });
 
@@ -67,7 +67,6 @@ export const updateEvent = (event) => {
       });
       toastr.success("Success", "Event has beed updated");
     } catch (err) {
-      console.log("my event", event);
       console.log(err);
       toastr.error("Oops", "Something went wrong");
     }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Grid, Loader } from "semantic-ui-react";
@@ -17,19 +18,24 @@ function EventDashboard() {
   const loading = useSelector((state) => state.async.loading);
 
   useEffect(() => {
+    window.scroll({
+      behavior: "smooth",
+      top: 0,
+      left: 0,
+    });
     const fetchEvent = async () => {
       const next = await dispatch(getEventsForDashBoard());
       if (next && next.docs && next.docs.length > 1) {
         setMoreEvent(true);
-        setLoadingInitial(false);
       }
+      setLoadingInitial(false);
+      setMounted(true);
     };
     fetchEvent();
-    setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (events && mounted) {
+    if (events) {
       setLocalEvents((state) => [...state, ...events]);
     }
   }, [events]);

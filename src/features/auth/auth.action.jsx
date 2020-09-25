@@ -1,6 +1,13 @@
 import { toastr } from "react-redux-toastr";
 import { createAction } from "redux-actions";
 import { closeModal } from "../modal/modal.action";
+import firebase from "../../app/config/firebase";
+import {
+  asyncActionError,
+  asyncActionFinish,
+  asyncActionStart,
+} from "../async/async.action";
+import { fetchEvents } from "../event/event.action";
 
 export const registerUserFailed = createAction("REGISTER_USER_FAILED");
 export const logInFailed = createAction("LOG_IN_FAILED");
@@ -113,6 +120,59 @@ export const cancelGoingToEvent = (event) => {
     } catch (err) {
       toastr.error("Oops", "Going to event failed");
       console.log(err);
+    }
+  };
+};
+
+export const getUserEvents = (userUid, activeTab) => {
+  return async (dispatch, getState) => {
+    dispatch(asyncActionStart());
+    const firestore = firebase.firestore();
+    const today = new Date();
+    const eventsRefs = firestore.collection("event_attendee");
+    let query;
+
+    switch (activeTab) {
+      case 1: //past events
+        query = eventsRefs
+          .where("userUid", "==", userUid)
+          .where("eventDate", "<=", today)
+          .orderBy("eventDate", "desc");
+        break;
+      case 2: //future events
+        query = eventsRefs
+          .where("userUid", "==", userUid)
+          .where("eventDate", ">=", today)
+          .orderBy("eventDate", "asc");
+        break;
+      case 3:
+        query = eventsRefs
+          .where("userUid", "==", userUid)
+          .where("host", "==", true)
+          .orderBy("eventDate", "desc");
+        break;
+      default:
+        query = eventsRefs
+          .where("userUid", "==", userUid)
+          .orderBy("eventDate", "desc");
+        break;
+    }
+    try {
+      let querySnap = await query.get();
+      const events = [];
+
+      for (let i = 0; i < querySnap.docs.length; ++i) {
+        let evt = await firestore
+          .collection("events")
+          .doc(querySnap.docs[i].data().eventId)
+          .get();
+        events.push({ ...evt.data(), id: evt.id });
+      }
+      dispatch(fetchEvents(events));
+      dispatch(asyncActionFinish());
+    } catch (err) {
+      console.log(err);
+      dispatch(asyncActionError());
     }
   };
 };
