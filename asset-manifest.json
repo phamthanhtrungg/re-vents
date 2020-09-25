@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/re-vents/static/css/main.bee5eaf4.chunk.css",
-    "main.js": "/re-vents/static/js/main.53fe0e4c.chunk.js",
-    "main.js.map": "/re-vents/static/js/main.53fe0e4c.chunk.js.map",
+    "main.js": "/re-vents/static/js/main.8652095e.chunk.js",
+    "main.js.map": "/re-vents/static/js/main.8652095e.chunk.js.map",
     "runtime-main.js": "/re-vents/static/js/runtime-main.01fa8988.js",
     "runtime-main.js.map": "/re-vents/static/js/runtime-main.01fa8988.js.map",
     "static/css/2.39ec4b7b.chunk.css": "/re-vents/static/css/2.39ec4b7b.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.39ec4b7b.chunk.css",
     "static/js/2.98f793ce.chunk.js",
     "static/css/main.bee5eaf4.chunk.css",
-    "static/js/main.53fe0e4c.chunk.js"
+    "static/js/main.8652095e.chunk.js"
   ]
 }
