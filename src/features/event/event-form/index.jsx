@@ -156,20 +156,22 @@ function EventForm({ match, history }) {
             >
               Cancel
             </Button>
-            <Button
-              onClick={() => {
-                dispatch(cancelToggle(!event.cancelled, eventId));
-                setEvent((state) => ({
-                  ...state,
-                  cancelled: !state.cancelled,
-                }));
-              }}
-              floated="right"
-              type="button"
-              color={event.cancelled ? "green" : "red"}
-            >
-              {event.cancelled ? "Reactivate event" : "Cancel event"}
-            </Button>
+            {eventId && (
+              <Button
+                onClick={() => {
+                  dispatch(cancelToggle(!event.cancelled, eventId));
+                  setEvent((state) => ({
+                    ...state,
+                    cancelled: !state.cancelled,
+                  }));
+                }}
+                floated="right"
+                type="button"
+                color={event.cancelled ? "green" : "red"}
+              >
+                {event.cancelled ? "Reactivate event" : "Cancel event"}
+              </Button>
+            )}
           </Form>
         </Segment>
       </Grid.Column>

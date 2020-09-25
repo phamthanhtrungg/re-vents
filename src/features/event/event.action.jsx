@@ -8,9 +8,8 @@ import {
   asyncActionStart,
 } from "../async/async.action";
 
+export const resetEvents = createAction("RESET_EVENTS");
 export const fetchEvents = createAction("FETCH_EVENTS");
-export const createEventType = createAction("CREATE_EVENT");
-export const updateEventType = createAction("UPDATE_EVENT");
 
 export const deleteEvent = (eventId) => {
   return async (_dispatch, _getState, { getFirebase, getFirestore }) => {
@@ -46,7 +45,7 @@ export const createEvent = (event) => {
         eventDate: event.date,
         host: true,
       });
-      dispatch(createEventType(event));
+
       toastr.success("Success", "Event has beed created");
     } catch (err) {
       console.log(err);
@@ -66,8 +65,6 @@ export const updateEvent = (event) => {
           lng: event.lng,
         },
       });
-
-      dispatch(createEventType(event));
       toastr.success("Success", "Event has beed updated");
     } catch (err) {
       console.log("my event", event);
@@ -90,17 +87,37 @@ export const cancelToggle = (cancelled, eventId) => {
   };
 };
 
-export const getEventsForDashBoard = () => {
-  return async (dispatch, getState) => {
-    dispatch(asyncActionStart());
+export const getEventsForDashBoard = (lastEvent) => {
+  return async (dispatch) => {
     const today = new Date();
     const firestore = firebase.firestore();
-    const eventQuery = firestore
-      .collection("events")
-      .where("date", ">=", today);
+    const eventRef = firestore.collection("events");
+
     try {
-      const querySnap = await eventQuery.get();
+      dispatch(asyncActionStart());
+      const startAfter =
+        lastEvent &&
+        (await firestore.collection("events").doc(lastEvent.id).get());
+      let query;
+
+      lastEvent
+        ? (query = eventRef
+            .where("date", ">=", today)
+            .orderBy("date")
+            .startAfter(startAfter)
+            .limit(2))
+        : (query = eventRef
+            .where("date", ">=", today)
+            .orderBy("date")
+            .limit(2));
+
+      const querySnap = await query.get();
       const events = [];
+
+      if (querySnap.docs.length === 0) {
+        dispatch(asyncActionFinish());
+        return;
+      }
 
       for (let i = 0; i < querySnap.docs.length; ++i) {
         let event = { ...querySnap.docs[i].data(), id: querySnap.docs[i].id };
@@ -108,6 +125,8 @@ export const getEventsForDashBoard = () => {
       }
       dispatch(fetchEvents(events));
       dispatch(asyncActionFinish());
+
+      return querySnap;
     } catch (err) {
       console.log(err);
       dispatch(asyncActionError());
