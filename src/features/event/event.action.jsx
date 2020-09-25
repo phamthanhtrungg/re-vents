@@ -1,12 +1,12 @@
 import { createAction } from "redux-actions";
 import { toastr } from "react-redux-toastr";
-import { fetchData } from "../../app/data/mock-api";
+import { createNewEvent } from "../../app/utils/helper";
+import firebase from "../../app/config/firebase";
 import {
   asyncActionError,
   asyncActionFinish,
   asyncActionStart,
 } from "../async/async.action";
-import { createNewEvent } from "../../app/utils/helper";
 
 export const fetchEvents = createAction("FETCH_EVENTS");
 export const createEventType = createAction("CREATE_EVENT");
@@ -77,19 +77,6 @@ export const updateEvent = (event) => {
   };
 };
 
-export const loadEvents = () => {
-  return async (dispatch) => {
-    try {
-      dispatch(asyncActionStart());
-      let events = await fetchData();
-      dispatch(fetchEvents(events));
-      dispatch(asyncActionFinish());
-    } catch (err) {
-      dispatch(asyncActionError(err));
-    }
-  };
-};
-
 export const cancelToggle = (cancelled, eventId) => {
   return async (_dispatch, _getState, { getFirestore }) => {
     const firestore = getFirestore();
@@ -99,6 +86,31 @@ export const cancelToggle = (cancelled, eventId) => {
       });
     } catch (err) {
       console.log(err);
+    }
+  };
+};
+
+export const getEventsForDashBoard = () => {
+  return async (dispatch, getState) => {
+    dispatch(asyncActionStart());
+    const today = new Date();
+    const firestore = firebase.firestore();
+    const eventQuery = firestore
+      .collection("events")
+      .where("date", ">=", today);
+    try {
+      const querySnap = await eventQuery.get();
+      const events = [];
+
+      for (let i = 0; i < querySnap.docs.length; ++i) {
+        let event = { ...querySnap.docs[i].data(), id: querySnap.docs[i].id };
+        events.push(event);
+      }
+      dispatch(fetchEvents(events));
+      dispatch(asyncActionFinish());
+    } catch (err) {
+      console.log(err);
+      dispatch(asyncActionError());
     }
   };
 };

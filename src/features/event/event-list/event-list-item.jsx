@@ -42,7 +42,8 @@ function EventListItem({ event, handleDeleteEvent }) {
       </Segment>
       <Segment>
         <span>
-          <Icon name="clock" /> {moment(date.toDate()).fromNow()} |
+          <Icon name="clock" />{" "}
+          {moment(date.toDate()).format("dddd D-MM-yyyy HH:mm").toString()} |
           <Icon name="marker" /> {venue}
         </span>
       </Segment>

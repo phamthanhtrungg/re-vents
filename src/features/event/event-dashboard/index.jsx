@@ -1,46 +1,29 @@
-import React from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
 import { Grid } from "semantic-ui-react";
 import { useSelector, useDispatch } from "react-redux";
 import EventList from "../event-list/event-list";
-import { deleteEvent } from "../event.action";
+import { deleteEvent, getEventsForDashBoard } from "../event.action";
 import LoadingComponent from "../../../app/layout/loading";
 import EventActivity from "../event-activity";
-import { useFirestoreConnect } from "react-redux-firebase";
 
 function EventDashboard() {
-  useFirestoreConnect([
-    {
-      collection: "events",
-      storeAs: "events",
-    },
-  ]);
-
-  const events = useSelector((state) => state.firestore.ordered?.events);
-  const eventKeys = useSelector((state) =>
-    Object.keys(state.firestore.data?.events || {})
-  );
   const dispatch = useDispatch();
-
+  const events = useSelector((state) => state.events);
+  const loading = useSelector((state) => state.async.loading);
+  useEffect(() => {
+    dispatch(getEventsForDashBoard());
+  }, []);
   const handleDeleteEvent = (eventId) => {
     dispatch(deleteEvent(eventId));
   };
 
-  return !events || !eventKeys ? (
+  return loading ? (
     <LoadingComponent />
   ) : (
     <Grid>
       <Grid.Column width={10}>
-        <EventList
-          events={Object.values(events).map((event, i) => {
-            return (
-              event && {
-                ...event,
-                id: eventKeys[i],
-              }
-            );
-          })}
-          handleDeleteEvent={handleDeleteEvent}
-        />
+        <EventList events={events} handleDeleteEvent={handleDeleteEvent} />
       </Grid.Column>
       <Grid.Column width={6}>
         <EventActivity />
