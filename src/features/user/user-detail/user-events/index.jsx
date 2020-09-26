@@ -13,7 +13,7 @@ const panes = [
   { menuItem: "Hosting", pane: { key: "hosted" } },
 ];
 
-function UserEvents({ uid, auth }) {
+function UserEvents({ uid }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function UserEvents({ uid, auth }) {
   };
 
   return (
-    <Grid.Column width={uid === auth.uid ? 12 : 16}>
+    <Grid.Column width={12}>
       <Segment attached loading={loading}>
         <Header icon="calendar" content="Events" />
         <Tab

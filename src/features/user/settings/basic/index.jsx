@@ -40,14 +40,14 @@ const Basics = (props) => {
 
   useEffect(() => {
     register({ name: "dateOfBirth" });
-    register({ name: "origin" });
+    register({ name: "city" });
     setMounted(true);
   }, []);
 
   useEffect(() => {
     if (!isEmpty(user) && mounted) {
       setValue("displayName", user.displayName);
-      setValue("city", user?.origin || "");
+      setValue("city", user?.city || "");
       setValue(
         "dateOfBirth",
         user?.dateOfBirth ? user.dateOfBirth.toDate() : ""
@@ -113,10 +113,10 @@ const Basics = (props) => {
           maxDate={moment().subtract(18, "years").toDate()}
         />
         <PlaceInput
-          name="origin"
+          name="city"
           placeholder="Home Town"
           setValue={setValue}
-          value={getValues("origin") || ""}
+          value={getValues("city") || ""}
         />
         {errors?.general?.message && (
           <Message error list={[errors?.general?.message]} />

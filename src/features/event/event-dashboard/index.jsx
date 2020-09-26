@@ -31,16 +31,9 @@ function EventDashboard() {
       let query;
 
       lastEvent
-        ? (query = eventRef
-            .where("date", ">=", today)
-            .orderBy("date")
-            .startAfter(startAfter)
-            .limit(2))
-        : (query = eventRef
-            .where("date", ">=", today)
-            .orderBy("date")
-            .limit(2));
-      console.log("get here");
+        ? (query = eventRef.orderBy("date").startAfter(startAfter).limit(2))
+        : (query = eventRef.orderBy("date").limit(2));
+
       const querySnap = await query.get();
       const events = [];
 
@@ -100,7 +93,7 @@ function EventDashboard() {
     <LoadingComponent />
   ) : (
     <Grid>
-      <Grid.Column width={10}>
+      <Grid.Column width={16}>
         <EventList
           loading={loadingEvent}
           moreEvents={moreEvent}
@@ -110,11 +103,11 @@ function EventDashboard() {
         />
       </Grid.Column>
 
-      <Grid.Column width={6}>
+      {/* <Grid.Column width={6}>
         <EventActivity />
-      </Grid.Column>
+      </Grid.Column> */}
 
-      <Grid.Column width={10}>
+      <Grid.Column width={16}>
         <Loader active={loadingEvent} />
       </Grid.Column>
     </Grid>

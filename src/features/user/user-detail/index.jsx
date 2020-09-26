@@ -13,9 +13,11 @@ import {
 } from "semantic-ui-react";
 import LazyLoad from "react-lazyload";
 import LoadingComponent from "../../../app/layout/loading";
-import { useFirestoreConnect } from "react-redux-firebase";
+import { useFirestore, useFirestoreConnect } from "react-redux-firebase";
 import { Link } from "react-router-dom";
 import UserEvents from "./user-events";
+import { toastr } from "react-redux-toastr";
+import { isEmpty } from "lodash";
 
 function UserDetailedPage({ match }) {
   const uid = match.params.id;
@@ -35,6 +37,12 @@ function UserDetailedPage({ match }) {
           subcollections: [{ collection: "photos" }],
           storeAs: "photos",
         },
+        {
+          collection: "users",
+          doc: auth.uid,
+          subcollections: [{ collection: "followings", doc: uid }],
+          storeAs: "followings",
+        },
       ];
     }
     return [
@@ -49,13 +57,87 @@ function UserDetailedPage({ match }) {
         subcollections: [{ collection: "photos" }],
         storeAs: "photos",
       },
+      {
+        collection: "users",
+        doc: auth.uid,
+        subcollections: [{ collection: "followings", doc: uid }],
+        storeAs: "followings",
+      },
     ];
   });
+
   const photos = useSelector((state) => state.firestore.ordered.photos);
   const profile = useSelector(
     (state) =>
       state.firestore.ordered.profiles && state.firestore.ordered.profiles[0]
   );
+  const followings = useSelector((state) => state.firestore.ordered.followings);
+  const isFollowing = !isEmpty(followings);
+  const firestore = useFirestore();
+
+  const followerProfile = useSelector((state) => state.firebase.profile);
+
+  const followUser = async (userToFollow) => {
+    const following = {
+      photoURL:
+        userToFollow.photoURL || process.env.PUBLIC_URL + "/assets/user.png",
+      city: userToFollow.city || "Unknown city",
+      displayName: userToFollow.displayName,
+    };
+
+    const follower = {
+      displayName: followerProfile.displayName,
+      photoURL:
+        followerProfile.photoURL || process.env.PUBLIC_URL + "/assets/user.png",
+      city: followerProfile.city || "Unknown city",
+    };
+
+    try {
+      await firestore.set(
+        {
+          collection: "users",
+          doc: auth.uid,
+          subcollections: [{ collection: "followings", doc: userToFollow.id }],
+        },
+        following
+      );
+
+      await firestore
+        .collection("users")
+        .doc(userToFollow.id)
+        .collection("followers")
+        .doc(auth.uid)
+        .set(follower);
+
+      toastr.success("Success", "You have followed this person");
+    } catch (err) {
+      console.log(err);
+      toastr.error("Oops", "Something wrong happened");
+    }
+  };
+
+  const unFollower = async (userToFollow) => {
+    try {
+      await firestore.delete({
+        collection: "users",
+        doc: auth.uid,
+        subcollections: [{ collection: "followings", doc: userToFollow.id }],
+      });
+
+      await firestore
+        .collection("users")
+        .doc(userToFollow.id)
+        .collection("followers")
+        .doc(auth.uid)
+        .delete();
+
+      toastr.success("Success", "You have un-followed this person");
+    } catch (err) {
+      console.log(err);
+      toastr.error("Oops", "Something wrong happened");
+    }
+  };
+
   return !profile ? (
     <LoadingComponent />
   ) : (
@@ -84,14 +166,14 @@ function UserDetailedPage({ match }) {
                         "years"
                       )
                     : "Unknown"}{" "}
-                  year old , Lives in {profile.origin || "Unknown"}
+                  year old , Lives in {profile.city || "Unknown"}
                 </Header>
               </Item.Content>
             </Item>
           </Item.Group>
         </Segment>
       </Grid.Column>
-      <Grid.Column width={uid === auth.uid ? 12 : 16}>
+      <Grid.Column width={12}>
         <Segment>
           <Grid columns={2}>
             <Grid.Column width={10}>
@@ -130,7 +212,7 @@ function UserDetailedPage({ match }) {
         </Segment>
       </Grid.Column>
 
-      {uid === auth.uid && (
+      {uid === auth.uid ? (
         <Grid.Column width={4}>
           <Segment>
             <Button
@@ -143,9 +225,33 @@ function UserDetailedPage({ match }) {
             />
           </Segment>
         </Grid.Column>
+      ) : !isFollowing ? (
+        <Grid.Column width={4}>
+          <Segment>
+            <Button
+              color="teal"
+              fluid
+              basic
+              content="Follow User"
+              onClick={() => followUser(profile)}
+            />
+          </Segment>
+        </Grid.Column>
+      ) : (
+        <Grid.Column width={4}>
+          <Segment>
+            <Button
+              color="teal"
+              fluid
+              basic
+              content="UnFollow User"
+              onClick={() => unFollower(profile)}
+            />
+          </Segment>
+        </Grid.Column>
       )}
       {photos && photos.length > 0 && (
-        <Grid.Column width={uid === auth.uid ? 12 : 16}>
+        <Grid.Column width={12}>
           <Segment attached>
             <Header icon="image" content="Photos" />
             <Image.Group size="small">
@@ -169,7 +275,7 @@ function UserDetailedPage({ match }) {
           </Segment>
         </Grid.Column>
       )}
-      <UserEvents uid={uid} auth={auth} />
+      <UserEvents uid={uid} />
     </Grid>
   );
 }
