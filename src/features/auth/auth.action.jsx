@@ -75,9 +75,9 @@ export const socialLogin = (selectedProvider) => {
 };
 
 export const goingToEvent = (event) => {
-  return async (_dispatch, getState, { getFirebase, getFirestore }) => {
-    const firestore = getFirestore();
-    const user = getFirebase().auth().currentUser;
+  return async (_dispatch, getState) => {
+    const firestore = firebase.firestore();
+    const user = firebase.auth().currentUser;
     const photoURL =
       getState().firebase.profile.photoURL ||
       process.env.PUBLIC_URL + "/assets/user.png";
@@ -89,15 +89,25 @@ export const goingToEvent = (event) => {
       host: false,
     };
     try {
-      await firestore.update(`events/${event.id}`, {
-        [`attendees.${user.uid}`]: attendee,
+      const eventDocRef = firestore.collection("events").doc(event.id);
+      const eventAttendeeDocRef = firestore
+        .collection("event_attendee")
+        .doc(`${event.id}_${user.uid}`);
+
+      await firestore.runTransaction(async (transaction) => {
+        await transaction.get(eventDocRef);
+        transaction.update(eventDocRef, {
+          [`attendees.${user.uid}`]: attendee,
+        });
+
+        transaction.set(eventAttendeeDocRef, {
+          eventId: event.id,
+          userUid: user.uid,
+          eventDate: event.date,
+          host: false,
+        });
       });
-      await firestore.set(`event_attendee/${event.id}_${user.uid}`, {
-        eventId: event.id,
-        userUid: user.uid,
-        eventDate: event.date,
-        host: false,
-      });
+
       toastr.success("Success", "Join event successfully");
     } catch (err) {
       toastr.error("Oops", "Going to event failed");

@@ -1,6 +1,7 @@
 import moment from "moment";
 
 export const createNewEvent = (user, photoURL, event) => {
+  delete event.id;
   event.date = moment(event.date).toDate();
 
   return {

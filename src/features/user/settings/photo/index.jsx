@@ -22,10 +22,13 @@ import { useSelector } from "react-redux";
 function PhotosPage() {
   const [files, setFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [isSettingMain, setIsSettingMain] = useState(false);
   const myCropper = useRef(null);
   const { auth, profile } = useSelector((state) => state.firebase);
+
   const firebase = useFirebase();
   const firestore = useFirestore();
+
   useFirestoreConnect([
     {
       collection: "users",
@@ -94,6 +97,7 @@ function PhotosPage() {
 
   const handleDeleteImage = async (photo) => {
     const user = firebase.auth().currentUser;
+
     try {
       await firebase.deleteFile(`${user.uid}/user_images/${photo.name}`);
       await firestore.delete({
@@ -114,12 +118,49 @@ function PhotosPage() {
   };
 
   const handleSetMainImage = async (photo) => {
+    setIsSettingMain(true);
+    const firestore = firebase.firestore();
+    const user = firebase.auth().currentUser;
+    const userDocRef = firestore.collection("users").doc(user.uid);
+    const eventAttendeeRef = firestore.collection("event_attendee");
     try {
-      await firebase.updateProfile({
+      const batch = firestore.batch();
+
+      batch.update(userDocRef, {
         photoURL: photo.url,
       });
+
+      let eventQuery = eventAttendeeRef
+        .where("userUid", "==", user.uid)
+        .where("eventDate", ">", new Date());
+
+      let eventQuerySnap = await eventQuery.get();
+
+      for (let i = 0; i < eventQuerySnap.docs.length; ++i) {
+        let eventDocRef = firestore
+          .collection("events")
+          .doc(eventQuerySnap.docs[i].data().eventId);
+
+        let event = await eventDocRef.get();
+        console.log(event);
+        if (event.data().hostUid === user.uid) {
+          batch.update(eventDocRef, {
+            hostPhotoURL: photo.url,
+            [`attendees.${user.uid}.photoURL`]: photo.url,
+          });
+        } else {
+          batch.update(eventDocRef, {
+            [`attendees.${user.uid}.photoURL`]: photo.url,
+          });
+        }
+      }
+
+      await batch.commit();
+      setIsSettingMain(false);
+
       toastr.success("Success", "Main photo updated");
     } catch (err) {
+      setIsSettingMain(false);
       toastr.error("Failed", "Something failed");
 
       console.log(err);
@@ -232,6 +273,7 @@ function PhotosPage() {
                   <Button
                     basic
                     color="green"
+                    loading={isSettingMain}
                     onClick={() => {
                       handleSetMainImage(photo);
                     }}
@@ -242,6 +284,7 @@ function PhotosPage() {
                     basic
                     icon="trash"
                     color="red"
+                    disabled={isSettingMain}
                     onClick={() => {
                       handleDeleteImage(photo);
                     }}
