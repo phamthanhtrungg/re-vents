@@ -6,7 +6,7 @@ const initialState = [];
 export const eventReducer = handleActions(
   {
     [fetchEvents]: (_state, { payload }) => {
-      return payload;
+      return [...payload];
     },
     [resetEvents]: (state) => {
       return initialState;

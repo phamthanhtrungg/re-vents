@@ -2,22 +2,66 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Grid, Loader } from "semantic-ui-react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import EventList from "../event-list/event-list";
-import { deleteEvent, getEventsForDashBoard } from "../event.action";
+import { deleteEvent } from "../event.action";
 import LoadingComponent from "../../../app/layout/loading";
 import EventActivity from "../event-activity";
-import { isEqual } from "lodash";
+import { useFirebase } from "react-redux-firebase";
 
 function EventDashboard() {
+  const [localEvents, setLocalEvents] = useState([]);
+  const [tempEvents, setTempEvents] = useState([]);
   const [moreEvent, setMoreEvent] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
+  const [loadingEvent, setLoadingEvent] = useState(false);
+  const firebase = useFirebase();
 
-  const [mounted, setMounted] = useState(false);
   const dispatch = useDispatch();
-  const events = useSelector((state) => state.events);
-  const loading = useSelector((state) => state.async.loading);
-  const [localEvents, setLocalEvents] = useState(events);
+  const getEventsForDashBoard = async (lastEvent) => {
+    const today = new Date();
+    const firestore = firebase.firestore();
+    const eventRef = firestore.collection("events");
+
+    try {
+      setLoadingEvent(true);
+      const startAfter =
+        lastEvent &&
+        (await firestore.collection("events").doc(lastEvent.id).get());
+      let query;
+
+      lastEvent
+        ? (query = eventRef
+            .where("date", ">=", today)
+            .orderBy("date")
+            .startAfter(startAfter)
+            .limit(2))
+        : (query = eventRef
+            .where("date", ">=", today)
+            .orderBy("date")
+            .limit(2));
+      console.log("get here");
+      const querySnap = await query.get();
+      const events = [];
+
+      if (querySnap.docs.length === 0) {
+        setLoadingEvent(false);
+        return querySnap;
+      }
+
+      for (let i = 0; i < querySnap.docs.length; ++i) {
+        let event = { ...querySnap.docs[i].data(), id: querySnap.docs[i].id };
+        events.push(event);
+      }
+
+      setTempEvents(events);
+      setLoadingEvent(false);
+      return querySnap;
+    } catch (err) {
+      console.log(err);
+      setLoadingEvent(false);
+    }
+  };
 
   useEffect(() => {
     window.scroll({
@@ -26,27 +70,24 @@ function EventDashboard() {
       left: 0,
     });
     const fetchEvent = async () => {
-      const next = await dispatch(getEventsForDashBoard());
-      if (next && next.docs && next.docs.length > 1) {
+      const next = await getEventsForDashBoard();
+      if (next && next.docs && next.docs.length >= 1) {
         setMoreEvent(true);
       }
       setLoadingInitial(false);
-      setMounted(true);
     };
     fetchEvent();
   }, []);
 
   useEffect(() => {
-    if (!isEqual(events, localEvents)) {
-      setLocalEvents((state) => [...state, ...events]);
-    }
-  }, [events]);
+    setLocalEvents([...localEvents, ...tempEvents]);
+  }, [tempEvents]);
 
   const getNextEvents = async () => {
-    const lastEvent = events[events.length - 1];
-    const next = await dispatch(getEventsForDashBoard(lastEvent));
+    const lastEvent = localEvents[localEvents.length - 1];
+    const next = await getEventsForDashBoard(lastEvent);
 
-    if (next && next.docs && next.docs.length <= 1) {
+    if (next && next.docs && next.docs.length < 1) {
       setMoreEvent(false);
     }
   };
@@ -61,18 +102,20 @@ function EventDashboard() {
     <Grid>
       <Grid.Column width={10}>
         <EventList
-          loading={loading}
+          loading={loadingEvent}
           moreEvents={moreEvent}
           getMoreEvents={getNextEvents}
           events={localEvents}
           handleDeleteEvent={handleDeleteEvent}
         />
       </Grid.Column>
+
       <Grid.Column width={6}>
         <EventActivity />
       </Grid.Column>
+
       <Grid.Column width={10}>
-        <Loader active={loading} />
+        <Loader active={loadingEvent} />
       </Grid.Column>
     </Grid>
   );

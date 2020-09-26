@@ -1,12 +1,6 @@
 import { createAction } from "redux-actions";
 import { toastr } from "react-redux-toastr";
 import { createNewEvent } from "../../app/utils/helper";
-import firebase from "../../app/config/firebase";
-import {
-  asyncActionError,
-  asyncActionFinish,
-  asyncActionStart,
-} from "../async/async.action";
 
 export const resetEvents = createAction("RESET_EVENTS");
 export const fetchEvents = createAction("FETCH_EVENTS");
@@ -82,53 +76,6 @@ export const cancelToggle = (cancelled, eventId) => {
       });
     } catch (err) {
       console.log(err);
-    }
-  };
-};
-
-export const getEventsForDashBoard = (lastEvent) => {
-  return async (dispatch) => {
-    const today = new Date();
-    const firestore = firebase.firestore();
-    const eventRef = firestore.collection("events");
-
-    try {
-      dispatch(asyncActionStart());
-      const startAfter =
-        lastEvent &&
-        (await firestore.collection("events").doc(lastEvent.id).get());
-      let query;
-
-      lastEvent
-        ? (query = eventRef
-            .where("date", ">=", today)
-            .orderBy("date")
-            .startAfter(startAfter)
-            .limit(2))
-        : (query = eventRef
-            .where("date", ">=", today)
-            .orderBy("date")
-            .limit(2));
-
-      const querySnap = await query.get();
-      const events = [];
-
-      if (querySnap.docs.length === 0) {
-        dispatch(asyncActionFinish());
-        return;
-      }
-
-      for (let i = 0; i < querySnap.docs.length; ++i) {
-        let event = { ...querySnap.docs[i].data(), id: querySnap.docs[i].id };
-        events.push(event);
-      }
-      dispatch(fetchEvents(events));
-      dispatch(asyncActionFinish());
-
-      return querySnap;
-    } catch (err) {
-      console.log(err);
-      dispatch(asyncActionError());
     }
   };
 };
