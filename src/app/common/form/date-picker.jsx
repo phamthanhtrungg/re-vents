@@ -26,7 +26,6 @@ function DateInputPicker({
         placeholderText={placeholder}
         dateFormat="dd/MM/yyyy HH:mm"
         timeFormat="HH:mm"
-        showYearDropDown
         dropdownMode="select"
         {...rest}
       />

@@ -133,13 +133,25 @@ export const getEventsForDashBoard = (lastEvent) => {
   };
 };
 
-export const addEventComment = (eventId, comment) => {
+export const addEventComment = (eventId, value, parentId) => {
   return async (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
+    const profile = getState().firebase.profile;
+    const user = firebase.auth().currentUser;
+    let newComment = {
+      parentId,
+      displayName: profile.displayName,
+      photoURL: profile.photoURL || process.env.PUBLIC_URL + "/assets/user.png",
+      uid: user.uid,
+      text: value.comment,
+      date: Date.now(),
+    };
     try {
-      await firebase.push(`event_chat/${eventId}`, comment);
+      await firebase.push(`event_chat/${eventId}`, newComment);
+      toastr.success("Success", "New comment added");
     } catch (err) {
       console.log(err);
+      toastr.error("Oops", "Something wrong happened");
     }
   };
 };

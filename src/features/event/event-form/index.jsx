@@ -143,6 +143,8 @@ function EventForm({ match, history }) {
               setValue={setValue}
               triggerValidation={trigger}
               showTimeSelect={true}
+              showYearDropDown={true}
+              showMonthDropdown={true}
             />
             <Button positive type="submit">
               Submit
