@@ -7,15 +7,17 @@ import EventList from "../event-list/event-list";
 import { deleteEvent, getEventsForDashBoard } from "../event.action";
 import LoadingComponent from "../../../app/layout/loading";
 import EventActivity from "../event-activity";
+import { isEqual } from "lodash";
 
 function EventDashboard() {
   const [moreEvent, setMoreEvent] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
-  const [localEvents, setLocalEvents] = useState([]);
+
   const [mounted, setMounted] = useState(false);
   const dispatch = useDispatch();
   const events = useSelector((state) => state.events);
   const loading = useSelector((state) => state.async.loading);
+  const [localEvents, setLocalEvents] = useState(events);
 
   useEffect(() => {
     window.scroll({
@@ -35,7 +37,7 @@ function EventDashboard() {
   }, []);
 
   useEffect(() => {
-    if (events) {
+    if (!isEqual(events, localEvents)) {
       setLocalEvents((state) => [...state, ...events]);
     }
   }, [events]);

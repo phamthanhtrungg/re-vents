@@ -49,7 +49,7 @@ function EventDetail({ match, history }) {
           isGoing={isGoing}
         />
         <EventDetailInfo event={{ ...event, id: eventId }} />
-        <EventDetailChat />
+        <EventDetailChat eventId={eventId} />
       </Grid.Column>
       <Grid.Column width={6}>
         <EventDetailSideBar attendees={event.attendees} />
