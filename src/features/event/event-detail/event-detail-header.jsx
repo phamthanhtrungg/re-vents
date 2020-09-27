@@ -4,6 +4,7 @@ import { Segment, Image, Item, Button, Header } from "semantic-ui-react";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { cancelGoingToEvent, goingToEvent } from "../../auth/auth.action";
+import { openModal } from "../../modal/modal.action";
 
 const eventImageTextStyle = {
   position: "absolute",
@@ -13,7 +14,7 @@ const eventImageTextStyle = {
   color: "white",
 };
 
-function EventDetailHeader({ event, isHost, isGoing }) {
+function EventDetailHeader({ event, isHost, isGoing, isAuthenticated }) {
   const dispatch = useDispatch();
   return (
     <Segment.Group>
@@ -52,7 +53,7 @@ function EventDetailHeader({ event, isHost, isGoing }) {
       <Segment attached="bottom">
         {!isHost && (
           <>
-            {isGoing ? (
+            {isGoing && (
               <Button
                 onClick={() => {
                   dispatch(cancelGoingToEvent(event));
@@ -60,11 +61,22 @@ function EventDetailHeader({ event, isHost, isGoing }) {
               >
                 Cancel My Place
               </Button>
-            ) : (
+            )}
+            {!isGoing && isAuthenticated && (
               <Button
                 color="teal"
                 onClick={() => {
                   dispatch(goingToEvent(event));
+                }}
+              >
+                JOIN THIS EVENT
+              </Button>
+            )}
+            {!isAuthenticated && (
+              <Button
+                color="teal"
+                onClick={() => {
+                  dispatch(openModal({ modalType: "UnAuthModal" }));
                 }}
               >
                 JOIN THIS EVENT

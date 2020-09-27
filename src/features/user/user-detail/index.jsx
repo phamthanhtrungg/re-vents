@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import {
@@ -19,7 +19,7 @@ import UserEvents from "./user-events";
 import { toastr } from "react-redux-toastr";
 import { isEmpty } from "lodash";
 
-function UserDetailedPage({ match }) {
+function UserDetailedPage({ match, history }) {
   const uid = match.params.id;
   const { auth } = useSelector((state) => state.firebase);
 
@@ -65,6 +65,19 @@ function UserDetailedPage({ match }) {
       },
     ];
   });
+
+  useEffect(() => {
+    async function findEvent() {
+      let user = await firestore.get(`users/${uid}`);
+
+      if (!user.exists) {
+        history.push("/error");
+        toastr.error("Error", "User not found");
+      }
+    }
+    findEvent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uid]);
 
   const photos = useSelector((state) => state.firestore.ordered.photos);
   const profile = useSelector(

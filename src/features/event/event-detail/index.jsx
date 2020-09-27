@@ -27,17 +27,19 @@ function EventDetail({ match, history }) {
   useEffect(() => {
     async function findEvent() {
       let event = await firestore.get(`events/${eventId}`);
+
       if (!event.exists) {
-        history.push("/events");
+        history.push("/error");
         toastr.error("Error", "Event not found");
       }
     }
     findEvent();
-  }, []);
+  }, [eventId]);
+
   const attendees = event?.attendees || [];
   const isHost = event?.hostUid === auth.uid;
   const isGoing = Object.keys(attendees).some((a) => a === auth.uid);
-
+  const isAuthenticated = auth.isLoaded && !auth.isEmpty;
   return !event ? (
     <LoadingComponent />
   ) : (
@@ -47,9 +49,10 @@ function EventDetail({ match, history }) {
           event={{ ...event, id: eventId }}
           isHost={isHost}
           isGoing={isGoing}
+          isAuthenticated={isAuthenticated}
         />
         <EventDetailInfo event={{ ...event, id: eventId }} />
-        <EventDetailChat eventId={eventId} />
+        {isAuthenticated && <EventDetailChat eventId={eventId} />}
       </Grid.Column>
       <Grid.Column width={6}>
         <EventDetailSideBar attendees={event.attendees} />

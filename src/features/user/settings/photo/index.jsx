@@ -142,7 +142,7 @@ function PhotosPage() {
           .doc(eventQuerySnap.docs[i].data().eventId);
 
         let event = await eventDocRef.get();
-        console.log(event);
+
         if (event.data().hostUid === user.uid) {
           batch.update(eventDocRef, {
             hostPhotoURL: photo.url,

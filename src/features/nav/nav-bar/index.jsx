@@ -21,16 +21,18 @@ function NavBar() {
         </Menu.Item>
         <Menu.Item as={NavLink} to="/events" name="Events" />
         <Menu.Item as={NavLink} to="/people" name="People" />
-        <Menu.Item>
-          <Button
-            floated="right"
-            as={Link}
-            to="/create-event"
-            positive
-            inverted
-            content="Create Event"
-          />
-        </Menu.Item>
+        {!auth.isEmpty && (
+          <Menu.Item>
+            <Button
+              floated="right"
+              as={Link}
+              to="/create-event"
+              positive
+              inverted
+              content="Create Event"
+            />
+          </Menu.Item>
+        )}
         {auth.isLoaded && !auth.isEmpty ? <SignInMenu /> : <SignOutMenu />}
       </Container>
     </Menu>
